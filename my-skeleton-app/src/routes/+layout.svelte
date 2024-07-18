@@ -8,6 +8,7 @@
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 	const year = new Date().getFullYear()
+	import { LightSwitch } from '@skeletonlabs/skeleton';
 
 </script>
 
@@ -16,7 +17,9 @@
 	<svelte:fragment slot="header">
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">Timber Buddy</strong>
+				<a href="/">
+					<strong class="text-xl uppercase">Timber Buddy</strong>
+				</a>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
 				<a
@@ -51,6 +54,11 @@
 				>
 					Support
 				</a>
+				<button
+					class="btn"
+				>
+					<LightSwitch height="h-8" width="w-16" />
+				</button>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
@@ -58,41 +66,37 @@
 	<slot />
 
 	<svelte:fragment slot="footer">
-		<!-- App Bar -->
-		<AppBar class="!bg-transparent">
-			<svelte:fragment slot="lead">
-				<div class="absolute -mb-24 text-center opacity-80  grid grid-cols-1 gap-.5">
-					<span class="text-sm">	&#169; Timber Buddy {year}</span>
-					<span class="text-xs opacity-85 ">Engineered with care.</span>
-					<span class="text-xs opacity-85">Jess Sullivan & Rossel & Co.</span>
-				</div>
-			</svelte:fragment>
-			<svelte:fragment slot="trail">
-				<div class="btn-group font-bold rounded-tr-none rounded-br-none -mr-4 border-8">
+
+				<div class="grid grid-cols-4 font-bold -mr-4 border-8">
 				<button
-					class=" variant-ghost-success !py-16 !text-3xl !px-8"
+					class=" btn rounded-none variant-ghost-success !py-16 md:text-xl xl:!text-3xl !px-8"
 				>
 					<span>
 						Next Cut </span>
 				</button>
 				<button
-					class=" variant-ghost-secondary !py-12 !text-3xl !px-8"
+					class=" btn rounded-none variant-ghost-secondary !py-12  md:text-xl xl:!text-3xl !px-8"
 				>
 					Set Ref
 				</button>
 				<button
-					class=" variant-ghost-surface !py-12 !text-3xl !px-8"
+					class=" btn rounded-none variant-ghost-surface !py-12 md:text-xl xl:!text-3xl "
 				>
 					Toggle Mode
 				</button>
 					<button
-						class=" variant-ghost-warning !py-12 !text-3xl !px-8"
+						class="btn rounded-none variant-ghost-warning !py-12 md:text-xl xl:!text-3xl !px-8"
 					>
 						Raise
 					</button>
 				</div>
 			</svelte:fragment>
-		</AppBar>
-	</svelte:fragment>
+
 
 </AppShell>
+
+<!--<div class="absolute -mb-24 text-center opacity-80  grid grid-cols-1 gap-.5">-->
+<!--	<span class="text-sm">	&#169; Timber Buddy {year}</span>-->
+<!--	<span class="text-xs opacity-85 ">Engineered with care.</span>-->
+<!--	<span class="text-xs opacity-85">Jess Sullivan & Rossel & Co.</span>-->
+<!--</div>-->
