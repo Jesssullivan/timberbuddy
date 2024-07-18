@@ -4,7 +4,7 @@ import typography from '@tailwindcss/typography';
 import { skeleton } from '@skeletonlabs/tw-plugin'
 
 export default {
-	darkMode: 'class',
+	darkMode: 'selector',
 	content: ['./src/**/*.{html,js,svelte,ts}', join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')],
 	theme: {
 		fontSize: {
@@ -16,6 +16,8 @@ export default {
 			'3xl': '3.953rem',
 			'4xl': '4.441rem',
 			'5xl': '5.052rem',
+			'jumbo': '16rem',
+
 		},
 		extend: {},
 	},
