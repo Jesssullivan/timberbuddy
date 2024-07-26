@@ -69,23 +69,23 @@
 
 				<div class="grid grid-cols-4 font-bold -mr-4 border-8">
 				<button
-					class=" btn rounded-none variant-ghost-success !py-16 md:text-xl xl:!text-3xl !px-8"
+					class=" btn rounded-none variant-ghost-success !py-16 md:text-xl xl:!text-2xl !px-8"
 				>
 					<span>
 						Next Cut </span>
 				</button>
 				<button
-					class=" btn rounded-none variant-ghost-secondary !py-12  md:text-xl xl:!text-3xl !px-8"
+					class=" btn rounded-none variant-ghost-secondary !py-12  md:text-xl xl:!text-2xl !px-8"
 				>
 					Set Ref
 				</button>
 				<button
-					class=" btn rounded-none variant-ghost-surface !py-12 md:text-xl xl:!text-3xl "
+					class=" btn rounded-none variant-ghost-surface !py-12 md:text-xl xl:!text-2xl "
 				>
 					Toggle Mode
 				</button>
 					<button
-						class="btn rounded-none variant-ghost-warning !py-12 md:text-xl xl:!text-3xl !px-8"
+						class="btn rounded-none variant-ghost-warning !py-12 md:text-xl xl:!text-2xl !px-8"
 					>
 						Raise
 					</button>
