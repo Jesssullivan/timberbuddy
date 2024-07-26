@@ -16,7 +16,7 @@ export default {
 			'3xl': '3.953rem',
 			'4xl': '4.441rem',
 			'5xl': '5.052rem',
-			'jumbo': '16rem',
+			'jumbo': '10rem',
 
 		},
 		extend: {},

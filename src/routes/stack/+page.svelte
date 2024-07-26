@@ -51,22 +51,22 @@
 		<button on:click={equals} class="w-4/6 h-full  font-bold " ></button>
 	</div>
 	<div class=" container m-auto  grid grid-cols-4  gap-x-2 gap-y-1 ">
-		<button class="btn min-h-24 lg:min-h-32 variant-soft-primary rounded-none" on:click={select(7)}>7</button>
+		<button class="btn min-h-24 lg:min-h-24 variant-soft-primary rounded-none" on:click={select(7)}>7</button>
 		<button class="btn  variant-soft-primary rounded-none" on:click={select(8)}>8</button>
 		<button class="btn  variant-soft-primary rounded-none" on:click={select(9)}>9</button>
 		<button class="btn  variant-soft-warning rounded-none" on:click={() => operation(operators[0])}>+</button>
 
-		<button class="btn min-h-24 lg:min-h-32 variant-soft-primary rounded-none" on:click={select(4)}>4</button>
+		<button class="btn min-h-24 lg:min-h-26 variant-soft-primary rounded-none" on:click={select(4)}>4</button>
 		<button class="btn  variant-soft-primary rounded-none" on:click={select(5)}>5</button>
 		<button class="btn  variant-soft-primary rounded-none" on:click={select(6)}>6</button>
 		<button class="btn  variant-soft-warning rounded-none" on:click={() => operation(operators[1])} >-</button>
 
-		<button class="btn min-h-24 lg:min-h-32 variant-soft-primary rounded-none" on:click={select(1)}>1</button>
+		<button class="btn min-h-24 lg:min-h-26 variant-soft-primary rounded-none" on:click={select(1)}>1</button>
 		<button class="btn  variant-soft-primary rounded-none" on:click={select(2)}>2</button>
 		<button class="btn  variant-soft-primary rounded-none" on:click={select(3)}>3</button>
 		<button class="btn  variant-soft-warning rounded-none" on:click={() => operation(operators[2])}>*</button>
 
-		<button class="btn min-h-32 lg:min-h-32  variant-soft-primary rounded-none" on:click={select(0)}>0</button>
+		<button class="btn min-h-32 lg:min-h-26  variant-soft-primary rounded-none" on:click={select(0)}>0</button>
 		<button class="btn  variant-soft-tertiary rounded-none" on:click={select(".")}>.</button>
 		<button class="btn  variant-soft-error rounded-none" on:click={clear}>Clear</button>
 		<button class="btn  variant-soft-warning rounded-none" on:click={() => operation(operators[3])}>/</button>
