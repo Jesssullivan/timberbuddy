@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Equal } from 'lucide-svelte';
-	import cut_size from '$lib';
+	import {cut_size} from '$lib';
 	$: display_number = $cut_size;
 	let operand: number | string;
 	let operator: number | string;
