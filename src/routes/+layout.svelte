@@ -18,7 +18,7 @@
 		<AppBar>
 			<svelte:fragment slot="lead">
 				<a href="/">
-					<strong class="text-xl uppercase">Timber Buddy</strong>
+					<strong class="text-lg uppercase">Timber Buddy</strong>
 				</a>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
@@ -44,14 +44,6 @@
 					target="_blank"
 					rel="noreferrer"
 				>
-					Toggle Units
-				</a>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://github.com/skeletonlabs/skeleton"
-					target="_blank"
-					rel="noreferrer"
-				>
 					Support
 				</a>
 				<button
@@ -67,25 +59,25 @@
 
 	<svelte:fragment slot="footer">
 
-				<div class="grid grid-cols-4 font-bold -mr-4 border-8">
+				<div class="grid grid-cols-4 font-bold -mr-4 border-2">
 				<button
-					class=" btn rounded-none variant-ghost-success !py-16 md:text-xl xl:!text-2xl !px-8"
+					class=" btn rounded-none variant-ghost-success !py-6 md:text-xl xl:!text-2xl !px-8"
 				>
 					<span>
 						Next Cut </span>
 				</button>
 				<button
-					class=" btn rounded-none variant-ghost-secondary !py-12  md:text-xl xl:!text-2xl !px-8"
+					class=" btn rounded-none variant-ghost-secondary   md:text-xl xl:!text-2xl !px-8"
 				>
 					Set Ref
 				</button>
 				<button
-					class=" btn rounded-none variant-ghost-surface !py-12 md:text-xl xl:!text-2xl "
+					class=" btn rounded-none variant-ghost-surface  md:text-xl xl:!text-2xl "
 				>
 					Toggle Mode
 				</button>
 					<button
-						class="btn rounded-none variant-ghost-warning !py-12 md:text-xl xl:!text-2xl !px-8"
+						class="btn rounded-none variant-ghost-warning  md:text-xl xl:!text-2xl !px-8"
 					>
 						Raise
 					</button>
