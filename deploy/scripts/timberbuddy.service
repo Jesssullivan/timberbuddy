@@ -1,0 +1,9 @@
+[Unit]
+Description=TimberBuddy Firmware Launcher
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /usr/bin/timber_launch.sh
+
+[Install]
+WantedBy=multi-user.target
