@@ -1,5 +1,5 @@
 <script lang="ts">
-
+	const year = new Date().getFullYear();
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
@@ -16,9 +16,11 @@
 			</a>
 		</div>
 		<div class="space-y-2">
-			<p>Lots of work to do.</p>
-			<p><code class="code">from scratch is the way</code></p>
-			<p><code class="code">beep boop, sock socks sock things </code></p>
+			<div class=" text-center opacity-80  grid grid-cols-1 gap-.5">
+				<span class="text-sm">	&#169; Timber Buddy {year}</span>
+				<span class="text-xs opacity-85 ">Engineered with care.</span>
+				<span class="text-xs opacity-85">Jess Sullivan & Rossel & Co.</span>
+			</div>
 		</div>
 	</div>
 </div>

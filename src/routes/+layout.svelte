@@ -106,8 +106,3 @@
 
 </AppShell>
 
-<!--<div class="absolute -mb-24 text-center opacity-80  grid grid-cols-1 gap-.5">-->
-<!--	<span class="text-sm">	&#169; Timber Buddy {year}</span>-->
-<!--	<span class="text-xs opacity-85 ">Engineered with care.</span>-->
-<!--	<span class="text-xs opacity-85">Jess Sullivan & Rossel & Co.</span>-->
-<!--</div>-->
