@@ -53,7 +53,8 @@
 	let innerWidth = 0
 	let innerHeight = 0
 
-	$: getNumString = display_number.toString().length < 3? display_number: Number(display_number.toString().substring(0,3))
+
+	$: getNumString = (Math.round(Number(display_number) * 100) / 100).toString()
 	$: showNumString = getNumString !== '' ? getNumString += '"': getNumString += ''
 
 
@@ -95,7 +96,7 @@
 <div class="float-right w-2/5">
 	<div class=" h-full mx-auto  justify-center items-center">
 		<div class="text-center items-center pt-12">
-			<span class=" pl-2 text-jumbo">{showNumString}</span>
+			<span class=" pl-2 text-jumbo">{showNumString.substring(0,5)}</span>
 				<div class=" pt-6 flex justify-center space-x-2">
 					<span class="text-2xl italic pb-8">Cut Size</span>
 				</div>
