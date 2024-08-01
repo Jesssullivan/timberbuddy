@@ -1,5 +1,12 @@
 {
-	"/": [],
-	"/core": [],
-	"/stack": []
+	"/": [
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/core": [
+		"src/routes/+layout.js"
+	],
+	"/stack": [
+		"src/routes/+layout.js"
+	]
 }

@@ -52,6 +52,7 @@ declare module '$env/static/private' {
 	export const npm_package_devDependencies_globals: string;
 	export const USER: string;
 	export const npm_package_scripts_check_watch: string;
+	export const npm_package_devDependencies__sveltejs_adapter_static: string;
 	export const PNPM_SCRIPT_SRC_DIR: string;
 	export const SSH_AUTH_SOCK: string;
 	export const __CF_USER_TEXT_ENCODING: string;
@@ -156,6 +157,7 @@ declare module '$env/dynamic/private' {
 		npm_package_devDependencies_globals: string;
 		USER: string;
 		npm_package_scripts_check_watch: string;
+		npm_package_devDependencies__sveltejs_adapter_static: string;
 		PNPM_SCRIPT_SRC_DIR: string;
 		SSH_AUTH_SOCK: string;
 		__CF_USER_TEXT_ENCODING: string;

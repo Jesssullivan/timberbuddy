@@ -210,7 +210,7 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     header: () => {
       return `${validate_component(AppBar, "AppBar").$$render($$result, {}, {}, {
         trail: () => {
-          return `<a class="btn btn-sm variant-ghost-surface" href="#">🪚 <span class="animate-pulse">${escape($odo_value)}</span> <span class="italic" data-svelte-h="svelte-19iifwk">Stats ⤤</span></a> <a class="btn btn-sm variant-ghost-surface" href="#" data-svelte-h="svelte-1yqftk3">Read Manual</a> <a class="btn btn-sm variant-ghost-surface" href="#" data-svelte-h="svelte-1kk1j7x">Toggle Network</a> <a class="btn btn-sm variant-ghost-surface" href="#" data-svelte-h="svelte-rdhsrg">Support</a> <button class="btn">${validate_component(LightSwitch, "LightSwitch").$$render($$result, { height: "h-8", width: "w-16" }, {}, {})}</button> `;
+          return `<button class="btn btn-sm variant-ghost-surface">🪚 <span class="animate-pulse">${escape($odo_value)}</span> <span class="italic" data-svelte-h="svelte-19iifwk">Stats ⤤</span></button> <button class="btn btn-sm variant-ghost-surface" data-svelte-h="svelte-hcyosv">Read Manual</button> <button class="btn btn-sm variant-ghost-surface" data-svelte-h="svelte-1uczolr">Toggle Network</button> <button class="btn btn-sm variant-ghost-surface" data-svelte-h="svelte-1tzh9wu">Support</button> <button class="btn">${validate_component(LightSwitch, "LightSwitch").$$render($$result, { height: "h-8", width: "w-16" }, {}, {})}</button> `;
         },
         lead: () => {
           return `<a href="/" class="flex flex-col justify-center text-center"><strong class="text-lg uppercase" data-svelte-h="svelte-1plrc3f">Timber Buddy</strong> <p class="text-sm hover:animate-pulse">${escape(core_name)}</p></a>`;
