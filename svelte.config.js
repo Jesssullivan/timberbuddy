@@ -12,8 +12,8 @@ const config = {
 		adapter: adapter({
 			// default options are shown. On some platforms
 			// these options are set automatically — see below
-			pages: '/var/www/html/',
-			assets: '/var/www/html/',
+			pages: '/tmp/timberbuddy/',
+			assets: '/tmp/timberbuddy/',
 			fallback: undefined,
 			precompress: false,
 			strict: false
