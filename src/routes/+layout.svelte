@@ -1,4 +1,5 @@
-<script lang="ts" xmlns="http://www.w3.org/1999/html">
+<script lang="ts">
+
 	import '../app.postcss';
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import {odo_value} from '$lib';
@@ -43,31 +44,27 @@
 				</a>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
-				<a
+				<button
 						class="btn btn-sm variant-ghost-surface"
-						href="#"
 				>
 					🪚 <span class="animate-pulse">{$odo_value}</span>
 					<span class="italic"> Stats ⤤</span>
-				</a>
-				<a
+				</button>
+				<button
 					class="btn btn-sm variant-ghost-surface"
-					href="#"
 				>
 					Read Manual
-				</a>
-				<a
+				</button>
+				<button
 					class="btn btn-sm variant-ghost-surface"
-					href="#"
 				>
 					Toggle Network
-				</a>
-				<a
+				</button>
+				<button
 					class="btn btn-sm variant-ghost-surface"
-					href="#"
 				>
 					Support
-				</a>
+				</button>
 				<button
 					class="btn"
 				>
