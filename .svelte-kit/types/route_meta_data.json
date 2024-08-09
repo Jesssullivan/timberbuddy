@@ -1,12 +1,14 @@
 {
 	"/": [
-		"src/routes/+layout.js",
-		"src/routes/+layout.js"
+		"src/routes/+page.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
 	],
 	"/core": [
-		"src/routes/+layout.js"
+		"src/routes/core/+page.server.ts",
+		"src/routes/+layout.ts"
 	],
 	"/stack": [
-		"src/routes/+layout.js"
+		"src/routes/+layout.ts"
 	]
 }

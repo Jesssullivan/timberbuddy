@@ -26,7 +26,7 @@
 		odo_value.set(result.toString())
 	}
 
-	const toggle_mode = () => $page.url.pathname === '/stack' ? goto('/core'): goto('/stack')
+	const toggle_mode = () => $page.url.pathname.includes('stack') ? goto('/core') : goto('/stack')
 
 	$: core_name = $page.url.pathname.split('/')[1] === '' ?  '🏠 '  :cml($page.url.pathname.split('/')[1] + ' mode')
 

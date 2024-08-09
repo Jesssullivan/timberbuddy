@@ -1,0 +1,88 @@
+   88  history | tac | less
+   87  echo $HISTFILE
+   86  nano ~/.config/lxsession/LXDE-pi/autostart
+   85  ls /etc/systemd/user/sometool.service
+   84  sudo nano /etc/systemd/user/timberbuddy.service
+   83  sudo nano /usr/bin/timber_launch.sh
+   82  sudo reboot now
+   81  sudo apt-get upgrade
+   80  sudo apt-get update 
+   79  ./install.sh
+   78  install.sh
+   77  sudo chmod +x install.sh 
+   76  ls -l
+   75  cd Brightness/
+   74  unzip Brightness.zip
+   73  wget https://files.waveshare.com/upload/f/f4/Brightness.zip
+   72  sudo reboot now
+   71  cp -rf /tmp/timberbuddy/* /var/www/html
+   70  pnpm run build
+   69  git pull
+   68  git stash
+   67  git pull
+   66  git fetch
+   65  cd git/timberbuddy/
+   64  sudo reboot now
+   63  cp -rf /tmp/timberbuddy/* /var/www/html
+   62  ls /var/www/html/
+   61  ls /var/
+   60  cp -rf /tmp/timberbuddy/ /var/www/html
+   59  cp -rf /tmp/timberbuddy/ /var/www/html/
+   58  pnpm run build
+   57  pnpm i
+   56  cd timberbuddy/
+   55  git clone https://github.com/Jesssullivan/timberbuddy
+   54  rm -rf timberbuddy/
+   53  rm timberbuddy/
+   52  cd ../
+   51  pnpm run build
+   50  pnpm i
+   49  git pull
+   48  git fetch
+   47  cd git/timberbuddy/
+   46  ls
+   45  sudo reboot now
+   44  sudo nano /usr/bin/timber_launch.sh
+   43  sudo rm /usr/bin/timber_launch.sh
+   42  sudo nano /usr/bin/timber_launch.sh
+   41  pwd
+   40  sudo nano /usr/bin/timber_launch.sh
+   39  sudo nano /etc/systemd/user/timberbuddy.service
+   38  ls /etc/systemd/user/
+   37  ls /etc/systemd/user/sometool.service
+   36  nano ~/switchtab.sh
+   35  sudo nano .config/wayfire.ini
+   34  sudo raspi-config
+   33  sudo apt install wtype
+   32  $ sudo nano .config/wayfire.ini
+   31  ls
+   30  sudo nano /usr/bin/timber_launch.sh
+   29  sudo reboot now
+   28  sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+   27  sudo nano /usr/bin/timber_launch.sh
+   26  sudo chmod 644 /etc/systemd/system/timberbuddy.service
+   25  sudo cp /lib/systemd/system/timberbuddy.service /etc/systemd/system/timberbuddy.service
+   24  sudo nano /lib/systemd/system/timberbuddy.service
+   23  sudo nano /usr/bin/timber_launch.sh
+   22  pwd
+   21  sudo nano /usr/bin/timber_launch.sh
+   20  sudo nano /etc/lightdm/lightdm.conf
+   19  sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+   18  nano /etc/xdg/lxsession/LXDE-pi/autostart
+   17  sudo nano ~/.config/lxsession/LXDE-pi/autostart
+   16  nano ~/.config/lxsession/LXDE-pi/autostart
+   15  pnpm i
+   14  source /home/raspi/.bashrc
+   13  pnpm i
+   12  curl -fsSL https://get.pnpm.io/install.sh | sh -
+   11  sudo apt install nodejs
+   10  git fetch
+    9  ls
+    8  cd timberbuddy/
+    7  git clone https://github.com/Jesssullivan/timberbuddy
+    6  cd git/
+    5  mkdir git
+    4  rpi-connect signin
+    3  sudo apt install rpi-connect
+    2  sudo apt upgrade
+    1  sudo apt update
