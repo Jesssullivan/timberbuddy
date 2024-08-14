@@ -2,12 +2,33 @@
 
 	import '../app.postcss';
 	import { LightSwitch } from '@skeletonlabs/skeleton';
-	import {odo_value} from '$lib';
 	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 	import {
 		goto,
 	} from '$app/navigation';
+
+	import { browser } from '$app/environment';
+	import { writable } from 'svelte/store';
+
+	// init store values
+	export let data;
+
+	// core store values
+	const defaultOdometerValue = data.read_defaults.core_height;
+
+	const initialOdometerValue = browser ?
+			window.localStorage.getItem('odo_value') ??
+			defaultOdometerValue :
+			defaultOdometerValue;
+
+	const odo_value = writable<string>(initialOdometerValue);
+
+	odo_value.subscribe((value) => {
+		if (browser) {
+			window.localStorage.setItem('odo_value', value);
+		}
+	});
 
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
@@ -21,7 +42,23 @@
 		}).replace(/\s+/g, ' ');
 	}
 
+	const update_odo = async () => {
+		const response = await fetch('/', {
+			method: 'POST',
+			body: JSON.stringify({
+				new_cut_size: Number($odo_value) + 1
+			}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		const res = await response.json();
+		console.log(res)
+	}
+
 	const add_cut = () => {
+		update_odo();
 		let result = Number($odo_value) + 1;
 		odo_value.set(result.toString())
 	}

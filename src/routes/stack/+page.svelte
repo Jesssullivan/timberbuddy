@@ -1,6 +1,40 @@
 <script lang="ts">
 	import { Equal } from 'lucide-svelte';
-	import {cut_size} from '$lib';
+	import {browser} from "$app/environment";
+	import {writable} from "svelte/store";
+	export let data;
+
+	const defaultStackValue = data.read_defaults.stack_height;
+
+	const initialStackValue = browser ?
+			window.localStorage.getItem('cut_size') ??
+			defaultStackValue :
+			defaultStackValue;
+
+	const cut_size = writable<string>(initialStackValue.toString());
+
+	const update_cut_size = async () => {
+		const response = await fetch('/', {
+			method: 'POST',
+			body: JSON.stringify({
+				new_cut_size: $cut_size
+			}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		const res = await response.json();
+		console.log(res)
+	}
+
+	cut_size.subscribe((value) => {
+		if (browser) {
+			update_cut_size()
+			window.localStorage.setItem('cut_size', value);
+		}
+	});
+
 	$: display_number = $cut_size;
 	let operand: number | string;
 	let operator: number | string;
