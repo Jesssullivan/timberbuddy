@@ -5,3 +5,4 @@ export async function load() {
         read_defaults: await JSON.parse(fs.readFileSync('store.json', 'utf-8'))
     };
 }
+

@@ -1,6 +1,23 @@
 <script lang="ts">
 	import { Equal } from 'lucide-svelte';
-	import {core_size} from '$lib';
+	import {browser} from "$app/environment";
+	import {writable} from "svelte/store";
+	export let data;
+
+
+	// core store values
+	const defaultCoreValue = data.read_defaults.core_height;
+
+	const initialCoreValue = browser ? window.localStorage.getItem('core_size') ?? defaultCoreValue : defaultCoreValue;
+
+	const core_size = writable<string>(initialCoreValue.toString());
+
+	core_size.subscribe((value) => {
+		if (browser) {
+			window.localStorage.setItem('core_size', value);
+		}
+	});
+
 	$: display_core_number = $core_size;
 	let operand: number | string;
 	let operator: number | string;
