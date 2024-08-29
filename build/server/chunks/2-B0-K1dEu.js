@@ -10,7 +10,7 @@ var _page_server_ts = /*#__PURE__*/Object.freeze({
 const index = 2;
 let component_cache;
 const component = async () => component_cache ??= (await import('./_page.svelte-C5spCnuJ.js')).default;
-const server_id = "src/routes/+page.server.ts";
+const server_id = "src/routes/+page.server.js";
 const imports = ["_app/immutable/nodes/2.76pXIvt7.js","_app/immutable/chunks/scheduler.B_ODK09l.js","_app/immutable/chunks/index.0nBEQ_MK.js"];
 const stylesheets = [];
 const fonts = [];
