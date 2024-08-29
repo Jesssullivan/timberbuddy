@@ -24,7 +24,7 @@ const index = 3;
 let component_cache;
 const component = async () => component_cache ??= (await import('./_page.svelte-D5YmgPS9.js')).default;
 const universal_id = "src/routes/core/+page.ts";
-const server_id = "src/routes/core/+page.server.ts";
+const server_id = "src/routes/core/+page.server.js";
 const imports = ["_app/immutable/nodes/3.B3DeYHL7.js","_app/immutable/chunks/scheduler.B_ODK09l.js","_app/immutable/chunks/index.0nBEQ_MK.js","_app/immutable/chunks/equal.BKZ5QOWy.js","_app/immutable/chunks/index.mMtE5ovN.js"];
 const stylesheets = [];
 const fonts = [];
