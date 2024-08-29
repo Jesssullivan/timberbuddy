@@ -1,0 +1,166 @@
+{
+  ".svelte-kit/generated/server/internal.js": {
+    "file": "internal.js",
+    "name": "internal",
+    "src": ".svelte-kit/generated/server/internal.js",
+    "isEntry": true,
+    "imports": [
+      "_internal.js"
+    ]
+  },
+  "_equal.js": {
+    "file": "chunks/equal.js",
+    "name": "equal",
+    "imports": [
+      "_ssr.js"
+    ]
+  },
+  "_exports.js": {
+    "file": "chunks/exports.js",
+    "name": "exports"
+  },
+  "_index.js": {
+    "file": "chunks/index.js",
+    "name": "index"
+  },
+  "_index2.js": {
+    "file": "chunks/index2.js",
+    "name": "index",
+    "imports": [
+      "_ssr.js"
+    ]
+  },
+  "_internal.js": {
+    "file": "chunks/internal.js",
+    "name": "internal",
+    "imports": [
+      "_ssr.js"
+    ]
+  },
+  "_server_file_utils.js": {
+    "file": "chunks/server_file_utils.js",
+    "name": "server_file_utils"
+  },
+  "_ssr.js": {
+    "file": "chunks/ssr.js",
+    "name": "ssr"
+  },
+  "_stores.js": {
+    "file": "chunks/stores.js",
+    "name": "stores",
+    "imports": [
+      "_ssr.js",
+      "_exports.js"
+    ]
+  },
+  "node_modules/.pnpm/@sveltejs+kit@2.5.25_@sveltejs+vite-plugin-svelte@3.1.2_svelte@4.2.19_vite@5.4.2_@types+node@_6xy3o7bdx7wwmq434mrlb3eb4e/node_modules/@sveltejs/kit/src/runtime/components/error.svelte": {
+    "file": "entries/fallbacks/error.svelte.js",
+    "name": "entries/fallbacks/error.svelte",
+    "src": "node_modules/.pnpm/@sveltejs+kit@2.5.25_@sveltejs+vite-plugin-svelte@3.1.2_svelte@4.2.19_vite@5.4.2_@types+node@_6xy3o7bdx7wwmq434mrlb3eb4e/node_modules/@sveltejs/kit/src/runtime/components/error.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js",
+      "_stores.js"
+    ]
+  },
+  "node_modules/.pnpm/@sveltejs+kit@2.5.25_@sveltejs+vite-plugin-svelte@3.1.2_svelte@4.2.19_vite@5.4.2_@types+node@_6xy3o7bdx7wwmq434mrlb3eb4e/node_modules/@sveltejs/kit/src/runtime/server/index.js": {
+    "file": "index.js",
+    "name": "index",
+    "src": "node_modules/.pnpm/@sveltejs+kit@2.5.25_@sveltejs+vite-plugin-svelte@3.1.2_svelte@4.2.19_vite@5.4.2_@types+node@_6xy3o7bdx7wwmq434mrlb3eb4e/node_modules/@sveltejs/kit/src/runtime/server/index.js",
+    "isEntry": true,
+    "imports": [
+      "_internal.js",
+      "_index.js",
+      "_exports.js",
+      "_index2.js"
+    ]
+  },
+  "src/routes/+layout.server.ts": {
+    "file": "entries/pages/_layout.server.ts.js",
+    "name": "entries/pages/_layout.server.ts",
+    "src": "src/routes/+layout.server.ts",
+    "isEntry": true
+  },
+  "src/routes/+layout.svelte": {
+    "file": "entries/pages/_layout.svelte.js",
+    "name": "entries/pages/_layout.svelte",
+    "src": "src/routes/+layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js",
+      "_index2.js",
+      "_stores.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_layout.DSoO6lat.css"
+    ]
+  },
+  "src/routes/+layout.ts": {
+    "file": "entries/pages/_layout.ts.js",
+    "name": "entries/pages/_layout.ts",
+    "src": "src/routes/+layout.ts",
+    "isEntry": true
+  },
+  "src/routes/+page.server.ts": {
+    "file": "entries/pages/_page.server.ts.js",
+    "name": "entries/pages/_page.server.ts",
+    "src": "src/routes/+page.server.ts",
+    "isEntry": true,
+    "imports": [
+      "_server_file_utils.js"
+    ]
+  },
+  "src/routes/+page.svelte": {
+    "file": "entries/pages/_page.svelte.js",
+    "name": "entries/pages/_page.svelte",
+    "src": "src/routes/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js"
+    ]
+  },
+  "src/routes/+server.ts": {
+    "file": "entries/endpoints/_server.ts.js",
+    "name": "entries/endpoints/_server.ts",
+    "src": "src/routes/+server.ts",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_server_file_utils.js"
+    ]
+  },
+  "src/routes/core/+page.server.ts": {
+    "file": "entries/pages/core/_page.server.ts.js",
+    "name": "entries/pages/core/_page.server.ts",
+    "src": "src/routes/core/+page.server.ts",
+    "isEntry": true
+  },
+  "src/routes/core/+page.svelte": {
+    "file": "entries/pages/core/_page.svelte.js",
+    "name": "entries/pages/core/_page.svelte",
+    "src": "src/routes/core/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js",
+      "_index2.js",
+      "_equal.js"
+    ]
+  },
+  "src/routes/stack/+page.server.ts": {
+    "file": "entries/pages/stack/_page.server.ts.js",
+    "name": "entries/pages/stack/_page.server.ts",
+    "src": "src/routes/stack/+page.server.ts",
+    "isEntry": true
+  },
+  "src/routes/stack/+page.svelte": {
+    "file": "entries/pages/stack/_page.svelte.js",
+    "name": "entries/pages/stack/_page.svelte",
+    "src": "src/routes/stack/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js",
+      "_index2.js",
+      "_equal.js"
+    ]
+  }
+}
