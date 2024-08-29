@@ -14,9 +14,6 @@ importers:
       lucide-svelte:
         specifier: ^0.408.0
         version: 0.408.0(svelte@4.2.18)
-      raspi-board:
-        specifier: ^7.4.0
-        version: 7.4.0
     devDependencies:
       '@skeletonlabs/skeleton':
         specifier: 2.10.1
@@ -982,9 +979,6 @@ packages:
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
-  j5-io-types@2.5.0:
-    resolution: {integrity: sha512-S44ds7NZfVUL3xsvboNEIXnrZ0TDUPixKtdcO4+L3bUctWzAtHSTvPmyU9G8urqfzXl6d22xBq7c+sjGUrD4+w==}
-
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
 
@@ -1297,10 +1291,6 @@ packages:
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
-
-  raspi-board@7.4.0:
-    resolution: {integrity: sha512-AMmBcXRm9UndFSu1bOaxQJrtx49UlXlvyQNPZzcWTrVznsX7Ttjtx97WmBfvtLygf0bPcJPIoxvrGVkAKLfxfA==}
-    engines: {node: '>= 6.0.0'}
 
   read-cache@1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
@@ -2474,8 +2464,6 @@ snapshots:
 
   isexe@2.0.0: {}
 
-  j5-io-types@2.5.0: {}
-
   jackspeak@3.4.3:
     dependencies:
       '@isaacs/cliui': 8.0.2
@@ -2734,10 +2722,6 @@ snapshots:
       postcss-selector-parser: 6.1.1
 
   queue-microtask@1.2.3: {}
-
-  raspi-board@7.4.0:
-    dependencies:
-      j5-io-types: 2.5.0
 
   read-cache@1.0.0:
     dependencies:
