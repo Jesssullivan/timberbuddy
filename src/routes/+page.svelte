@@ -1,7 +1,6 @@
 <script lang="ts">
 	const year = new Date().getFullYear();
 
-
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
