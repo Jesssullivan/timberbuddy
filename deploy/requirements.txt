@@ -1,0 +1,8 @@
+ansible
+ansible-lint
+setuptools
+pytest
+pytest-only
+requests
+PyYAML
+schedule

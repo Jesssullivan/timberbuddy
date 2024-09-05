@@ -1,0 +1,12 @@
+---
+- name: ensure kiosk mode
+  template:
+    src: wayfire_kiosk.ini.j2
+    dest: /home/jsullivan2/.config/wayfire.ini
+  become: true
+- name: ensure kiosk script is in place
+  template:
+    src: kiosk.sh.j2
+    dest: /home/jsullivan2/kiosk.sh
+    mode: "+x"
+  become: true

@@ -1,3 +1,4 @@
+.secrets.yml
 store.json
 **/.DS_Store
 .svelte-kit

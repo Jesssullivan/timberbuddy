@@ -33,6 +33,7 @@
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
+	import {io} from "socket.io-client";
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 
@@ -67,13 +68,26 @@
 
 	$: core_name = $page.url.pathname.split('/')[1] === '' ?  '🏠 '  :cml($page.url.pathname.split('/')[1] + ' mode')
 
+	// @todo: copy pasta below to start working on node button io stuff
+
+	// const socket = io(); //load socket.io-client and connect to the host that serves the page
+	// window.addEventListener("load", function(){ //when page loads
+	// 	var lightbox = document.getElementById("light");
+	// 	lightbox.addEventListener("change", function() { //add event listener for when checkbox changes
+	// 		socket.emit("light", Number(this.checked)); //send button status to server (as 1 or 0)
+	// 	});
+	// });
+	// socket.on('light', function (data) { //get button status from client
+	// 	document.getElementById("light").checked = data; //change checkbox according to push button on Raspberry Pi
+	// 	socket.emit("light", data); //send push button status to back to server
+	// });
 
 </script>
 
 <!-- App Shell -->
 <AppShell>
 	<svelte:fragment slot="header">
-		<AppBar>
+		<AppBar class="max-h-24">
 			<svelte:fragment slot="lead">
 				<a href="/" class="flex flex-col justify-center text-center">
 					<strong class="text-lg uppercase">Timber Buddy</strong>
@@ -110,6 +124,7 @@
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
+
 	<!-- Page Route Content -->
 	<slot />
 

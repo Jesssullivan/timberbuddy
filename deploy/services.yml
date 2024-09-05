@@ -1,1 +1,6 @@
-# /etc/systemd/system/myapp.service
+---
+- hosts: all
+  roles:
+    - role: kiosk
+#    - role: pi-setup
+#    - role: waveshare-dsi

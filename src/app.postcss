@@ -3,7 +3,39 @@
 @tailwind utilities;
 @tailwind variants;
 
-html,
-body {
-	@apply h-full overflow-hidden;
+.app-shell {
+	-webkit-overflow-scrolling: initial;
 }
+.hideBtn {
+	visibility: hidden;
+}
+
+html, body {
+	@apply h-full;
+	position: fixed;
+background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+@keyframes colorChange {
+	from { /* radial-gradient(farthest-corner at top right, ..) */
+		background-position:left top;
+		background-size:200% 100%;
+
+	}
+	49.9% {
+		background-position:left top;
+	}
+	50% { /* radial-gradient(farthest-corner at top center, ..) */
+		background-size:100% 100%;
+	}
+	50.1% {
+		background-position:right top;
+	}
+	to { /* radial-gradient(farthest-corner at top left, ..) */
+		background-position:right top;
+		background-size:200% 100%;
+	}
+}
+

@@ -1,0 +1,39 @@
+---
+- name: ensure boot config is configured
+  blockinfile:
+    dest: /boot/firmware/config.txt
+    block: |
+      dtoverlay=vc4-kms-v3d
+      dtoverlay=vc4-kms-dsi-7inch
+  become: true
+- name: insert empty line before the marker
+  lineinfile:
+    dest: /boot/firmware/config.txt
+    insertbefore: '^# TIMBERBUDDY ANSIBLE MANAGED BLOCK$'
+    line: ''
+- name: Update all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+  become: true
+- name: install backlight util in default location
+  shell: |
+    wget https://files.waveshare.com/upload/f/f4/Brightness.zip
+    unzip Brightness.zip
+    cd Brightness
+    sudo chmod +x install.sh
+    ./install.sh
+- name: preform pulse brightness sanity check
+  shell: |
+    echo 100 | sudo tee /sys/class/backlight/*/brightness && sleep 1
+    echo 0 | sudo tee /sys/class/backlight/*/brightness && sleep 1
+    echo 100 | sudo tee /sys/class/backlight/*/brightness && sleep 1
+    echo 255 | sudo tee /sys/class/backlight/*/brightness && sleep 1
+    echo 100 | sudo tee /sys/class/backlight/*/brightness && sleep 1
+    echo 0 | sudo tee /sys/class/backlight/*/brightness && sleep 1
+    echo 100 | sudo tee /sys/class/backlight/*/brightness && sleep 1
+    echo 200 | sudo tee /sys/class/backlight/*/brightness
+## finally:
+#- name: finally reboot
+#  command: reboot now
+#  become: true

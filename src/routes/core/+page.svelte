@@ -82,7 +82,7 @@
 <div class="flex">
 
 	<div class="w-3/5 text-2xl pl-1">
-		<div class="h-14 my-2 text-right text-2xl variant-soft-tertiary ">
+		<div class="h-14 my-1 text-right text-2xl variant-soft-tertiary ">
 			<button on:click={equals} class="w-2/6 h-full float-left font-bold btn variant-ghost-success rounded-l" ><Equal size="{48}" /></button>
 			<button on:click={equals} class="w-4/6 h-full  font-bold " ></button>
 		</div>
