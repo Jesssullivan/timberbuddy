@@ -1,0 +1,64 @@
+---
+- name: check i2c status
+  command: raspi-config nonint get_i2c
+  register: i2c_state
+  become: true
+- name: enable i2c
+  shell: |
+    raspi-config nonint do_i2c 0
+  become: true
+  when: i2c_state != 0
+- name: ensure wlan power is off
+  blockinfile:
+    dest: /boot/firmware/config.txt
+    block: |
+      - /sbin/iwconfig wlan0 power off
+  become: true
+- name: insert empty line before the marker
+  lineinfile:
+    dest: /boot/firmware/config.txt
+    insertbefore: '^# TIMBERBUDDY ANSIBLE MANAGED BLOCK$'
+    line: ''
+  become: true
+- name: install pre depends
+  apt:
+    pkg:
+      - "lsb-release"
+      - "curl"
+  become: true
+- name: Ensure network persistence
+  template:
+    src: network_up.sh.j2
+    dest: "~/network_up.sh"
+    mode: "+x"
+  become: true
+- name: Run network persistence every 5 minutes
+  become: yes
+  become_method: sudo
+  cron:
+    name: "net_persist"
+    user: "root"
+    weekday: "*"
+    minute: "5"
+    hour: "*"
+    job: "./network_up.sh > /log/network.log"
+    state: present
+- name: setup tailscale
+  shell: |
+    curl -L https://pkgs.tailscale.com/stable/raspbian/$(lsb_release -cs).noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+    echo "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/raspbian $(lsb_release -cs) main" | sudo tee  /etc/apt/sources.list.d/tailscale.list
+  become: true
+#- name: Update all packages to their latest version
+#  apt:
+#    update_cache: yes
+#  become: true
+#- name: Upgrade all packages to their latest version
+#  apt:
+#    name: "*"
+#    state: latest
+#  become: true
+#- name: install tailscale
+#  apt:
+#    pkg: "tailscale"
+#  become: true
+

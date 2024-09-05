@@ -5,7 +5,7 @@ export default {
 	preprocess: [vitePreprocess()],
 	kit: {
 		adapter: adapter({
-			out: '/tmp/timberbuddy/',
+			// out: '/tmp/timberbuddy/',
 			precompress: true,
 			envPrefix: ''
 		})

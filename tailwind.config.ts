@@ -2,6 +2,7 @@ import { join } from 'path'
 import type { Config } from 'tailwindcss'
 import typography from '@tailwindcss/typography';
 import { skeleton } from '@skeletonlabs/tw-plugin'
+import { tbTheme } from './timber-buddy-theme'
 
 export default {
 	darkMode: 'selector',
@@ -25,13 +26,10 @@ export default {
 		typography,
 		skeleton({
 			themes: {
-				preset: [
-					{
-						name: 'skeleton',
-						enhancements: true,
-					},
-				],
-			},
+				custom: [
+					tbTheme
+				]
+			}
 		}),
 	],
 } satisfies Config;
