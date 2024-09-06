@@ -10,3 +10,8 @@
     dest: /home/jsullivan2/kiosk.sh
     mode: "+x"
   become: true
+- name: ensure revised wayfire defaults are in place
+  template:
+    src: defaults.ini.j2
+    dest: /etc/wayfire/defaults.ini
+  become: true
