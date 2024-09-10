@@ -1,0 +1,51 @@
+---
+### tasks needed:
+## ensure pnpm is installed
+- name: install pnpm needs
+  apt:
+    pkg:
+      - "ca-certificates"
+      - "gnupg"
+      - "curl"
+  become: true
+- name: ensure node gpg key is in place
+  shell: |
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/nodesource.gpg
+    echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+  become: true
+- name: Update all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+  become: true
+- name: install nodejs
+  apt:
+    pkg:
+      - "nodejs"
+      - "build-essential"
+  become: true
+- name: ensure pnpm is installed
+  command: curl -fsSL https://get.pnpm.io/install.sh | sh -
+  become: true
+- name: ensure node depends are installed
+  command: pnpm i
+  chdir: /usr/bin/timberbuddy/
+- name: build timberbuddy
+  command: pnpm run build
+  chdir: /usr/bin/timberbuddy/
+- name: Ensure Timber Buddy control interface service is in place
+  template:
+    src: TimberBuddyInterfaceService.service.j2
+    dest: /etc/systemd/system/TimberBuddyInterfaceService.service
+    mode: 0644
+  become: yes
+- name: Ensure Timber Buddy Interface Service is fully stopped
+  systemd:
+    name: TimberBuddyInterfaceService
+    state: stopped
+  become: yes
+- name: Ensure Timber Buddy Interface Service is running
+  systemd:
+    name: TimberBuddyInterfaceService
+    state: started
+  become: yes
