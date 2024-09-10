@@ -1,0 +1,13 @@
+[Unit]
+Description=Timber Buddy Control Interface
+After=network.target
+
+[Service]
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node server/server.js
+WorkingDirectory=/usr/bin/timberbuddy/
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
