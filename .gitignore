@@ -3,6 +3,7 @@ store.json
 **/.DS_Store
 .svelte-kit
 node_modules
+**/.idea
 
 # Logs
 logs
