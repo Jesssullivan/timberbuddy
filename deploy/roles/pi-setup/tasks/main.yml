@@ -3,16 +3,22 @@
   command: raspi-config nonint get_i2c
   register: i2c_state
   become: true
+- name: enable linger
+  command:  loginctl enable-linger
+  become: true
 - name: enable i2c
   shell: |
     raspi-config nonint do_i2c 0
   become: true
   when: i2c_state != 0
-- name: ensure wlan power is off
+- name: ensure wlan power and splashboot is off
   blockinfile:
     dest: /boot/firmware/config.txt
     block: |
-      - /sbin/iwconfig wlan0 power off
+      dtoverlay=vc4-kms-v3d
+      dtoverlay=vc4-kms-dsi-7inch
+      disable_splash=0
+      /sbin/iwconfig wlan0 power off
   become: true
 - name: insert empty line before the marker
   lineinfile:
@@ -20,6 +26,11 @@
     insertbefore: '^# TIMBERBUDDY ANSIBLE MANAGED BLOCK$'
     line: ''
   become: true
+- name: sync boot cmdline script
+  template:
+    src: cmdline.txt
+    dest: "/boot/firmware/cmdline.txt"
+  become: yes
 - name: install pre depends
   apt:
     pkg:
@@ -32,6 +43,16 @@
     dest: "~/network_up.sh"
     mode: "+x"
   become: true
+- name: ensure pix script is updated
+  template:
+    src: pix.script
+    dest: "/usr/share/plymouth/themes/pix/pix.script"
+  become: yes
+- name: Place neko girl for startup
+  synchronize:
+    src: splash.png
+    dest: "/usr/share/plymouth/themes/pix/splash.png"
+  become: yes
 - name: Run network persistence every 5 minutes
   become: yes
   become_method: sudo
@@ -43,22 +64,7 @@
     hour: "*"
     job: "./network_up.sh > /log/network.log"
     state: present
-- name: setup tailscale
+- name: rebuild boot theme
   shell: |
-    curl -L https://pkgs.tailscale.com/stable/raspbian/$(lsb_release -cs).noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
-    echo "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/raspbian $(lsb_release -cs) main" | sudo tee  /etc/apt/sources.list.d/tailscale.list
+    plymouth-set-default-theme --rebuild-initrd pix
   become: true
-#- name: Update all packages to their latest version
-#  apt:
-#    update_cache: yes
-#  become: true
-#- name: Upgrade all packages to their latest version
-#  apt:
-#    name: "*"
-#    state: latest
-#  become: true
-#- name: install tailscale
-#  apt:
-#    pkg: "tailscale"
-#  become: true
-

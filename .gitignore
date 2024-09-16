@@ -4,6 +4,7 @@ store.json
 .svelte-kit
 node_modules
 **/.idea
+**/timber_venv
 
 # Logs
 logs

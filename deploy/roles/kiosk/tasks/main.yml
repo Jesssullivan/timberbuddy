@@ -1,5 +1,44 @@
 ---
-- name: ensure kiosk mode
+- name: Update all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+  become: true
+- name: install piconnect
+  apt:
+    pkg:
+      - "rpi-connect"
+- name: setup gh depends
+  shell: |
+    GITHUB_CLI_VERSION=$(curl -s "https://api.github.com/repos/cli/cli/releases/latest" | grep -Po '"tag_name": "v\K[0-9.]+')
+    curl -Lo gh.deb "https://github.com/cli/cli/releases/latest/download/gh_${GITHUB_CLI_VERSION}_linux_armv6.deb"
+    sudo dpkg -i gh.deb
+- name: add gh-key
+  template:
+    src: gh-key.txt.j2
+    dest: gh-key.txt
+- name: apply gh auth key
+  shell: |
+    gh auth login --with-token < gh-key.txt
+- name: setup tailscale
+  shell: |
+    curl -L https://pkgs.tailscale.com/stable/raspbian/$(lsb_release -cs).noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+    echo "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/raspbian $(lsb_release -cs) main" | sudo tee  /etc/apt/sources.list.d/tailscale.list
+  become: true
+- name: Update all packages to their latest version
+  apt:
+    update_cache: yes
+  become: true
+- name: Upgrade all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+  become: true
+- name: install tailscale
+  apt:
+    pkg: "tailscale"
+  become: true
+- name: ensure kiosk mode by updating wayfire.ini
   template:
     src: wayfire_kiosk.ini.j2
     dest: /home/jsullivan2/.config/wayfire.ini

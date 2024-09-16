@@ -1,13 +1,13 @@
 [Unit]
 Description=Timber Buddy Control Interface
-After=network.target
+After=ssh.target
 
 [Service]
-Environment=NODE_ENV=production
-ExecStart=/usr/bin/node server/server.js
-WorkingDirectory=/usr/bin/timberbuddy/
-KillMode=process
+Type=simple
+ExecStart=/usr/bin/node /home/jsullivan2/timberbuddy/server/index.js
+WorkingDirectory=/home/jsullivan2/timberbuddy/
 Restart=on-failure
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
