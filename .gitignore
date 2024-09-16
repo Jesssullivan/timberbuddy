@@ -5,6 +5,9 @@ store.json
 node_modules
 **/.idea
 **/timber_venv
+**/build
+
+
 
 # Logs
 logs
