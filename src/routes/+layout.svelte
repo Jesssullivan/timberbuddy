@@ -17,12 +17,7 @@
 	// core store values
 	const defaultOdometerValue = data.read_defaults.core_height;
 
-	const initialOdometerValue = browser ?
-			window.localStorage.getItem('odo_value') ??
-			defaultOdometerValue :
-			defaultOdometerValue;
-
-	const odo_value = writable<string>(initialOdometerValue);
+	const odo_value = writable<string>(defaultOdometerValue);
 
 	odo_value.subscribe((value) => {
 		if (browser) {
@@ -33,7 +28,6 @@
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
-	import {io} from "socket.io-client";
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 
