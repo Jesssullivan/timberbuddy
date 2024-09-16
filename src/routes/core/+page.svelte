@@ -6,12 +6,7 @@
 
 	const defaultStackValue = data.read_defaults.core_height;
 
-	const initialCoreValue = browser ?
-			window.localStorage.getItem('core_size') ??
-			defaultStackValue :
-			defaultStackValue;
-
-	const core_cut_size = writable<string>(initialCoreValue.toString());
+	const core_cut_size = writable<string>(defaultStackValue.toString());
 
 	const update_cut_size = async () => {
 		const response = await fetch('/', {
