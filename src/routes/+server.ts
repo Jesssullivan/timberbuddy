@@ -6,8 +6,8 @@ export function GET() {}
 
 // update odo value:
 export async function POST(ev) {
-    const { new_cut_size } = await ev.request.json();
-    const res = write_update_value('odo_value', new_cut_size)
+    const { key, new_cut_size } = await ev.request.json();
+    const res = write_update_value(key, new_cut_size)
     return json(res)
 }
 

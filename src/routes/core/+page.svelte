@@ -4,38 +4,56 @@
 	import {writable} from "svelte/store";
 	export let data;
 
+	const defaultStackValue = data.read_defaults.core_height;
 
-	// core store values
-	const defaultCoreValue = data.read_defaults.core_height;
+	const initialCoreValue = browser ?
+			window.localStorage.getItem('core_size') ??
+			defaultStackValue :
+			defaultStackValue;
 
-	const initialCoreValue = browser ? window.localStorage.getItem('core_size') ?? defaultCoreValue : defaultCoreValue;
+	const core_cut_size = writable<string>(initialCoreValue.toString());
 
-	const core_size = writable<string>(initialCoreValue.toString());
+	const update_cut_size = async () => {
+		const response = await fetch('/', {
+			method: 'POST',
+			body: JSON.stringify({
+				key: "core_height",
+				new_cut_size: $core_cut_size
+			}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
 
-	core_size.subscribe((value) => {
+		const res = await response.json();
+		console.log(res)
+	}
+
+	core_cut_size.subscribe((value) => {
 		if (browser) {
+			update_cut_size()
 			window.localStorage.setItem('core_size', value);
 		}
 	});
 
-	$: display_core_number = $core_size;
+	$: display_number = $core_cut_size;
 	let operand: number | string;
 	let operator: number | string;
 	let result: number | string;
 	let operators = ["+", "-", "*", "/"];
 
 	const select = (num: number | string) => () => {
-		display_core_number += num.toString();
+		display_number += num.toString();
 	};
 
 	const operation = (sign: number | string) => {
-		operand = Number(display_core_number);
+		operand = Number(display_number);
 		operator = sign;
-		display_core_number = "";
+		display_number = "";
 	}
 
 	const equals = () => {
-		let display_number_num = Number(display_core_number);
+		let display_number_num = Number(display_number);
 		operand = Number(operand)
 		if (operator === "+") {
 			result = operand + display_number_num;
@@ -46,34 +64,33 @@
 		} else if (operator === "/") {
 			result = operand / display_number_num;
 		}
-		display_core_number = result.toString()
-		core_size.set(display_core_number)
+		display_number = result.toString()
+		core_cut_size.set(display_number)
 	}
 
-	const clear = () => (display_core_number = "");
+	const clear = () => (display_number = "");
 
 	const larger_cut = () => {
-		let display_number_num = Number(display_core_number);
+		let display_number_num = Number(display_number);
 		result = display_number_num + 1;
-		display_core_number = result.toString()
-		core_size.set(display_core_number)
+		display_number = result.toString()
+		core_cut_size.set(display_number)
 	}
 
 	const smaller_cut = () => {
-		let display_number_num = Number(display_core_number);
+		let display_number_num = Number(display_number);
 		result = display_number_num - 1;
-		display_core_number = result.toString()
-		core_size.set(display_core_number)
+		display_number = result.toString()
+		core_cut_size.set(display_number)
 
 	}
 
 	let innerWidth = 0
 	let innerHeight = 0
 
-	$: getNumString = display_core_number.toString().length < 3?
-			display_core_number: Number(display_core_number.toString().substring(0,3))
-	$: showNumString = getNumString !== '' ? getNumString += '"': getNumString += ''
 
+	$: getNumString = (Math.round(Number(display_number) * 100) / 100).toString()
+	$: showNumString = getNumString !== '' ? getNumString += '"': getNumString += ''
 
 </script>
 
