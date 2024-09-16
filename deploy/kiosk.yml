@@ -1,0 +1,6 @@
+---
+## upon running kiosk playbook:
+#
+- hosts: all
+  roles:
+    - role: kiosk

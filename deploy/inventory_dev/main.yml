@@ -1,0 +1,9 @@
+---
+all:
+  # TB Embedded vars:
+  vars:
+    address: https://google.com/
+    ansible_python_interpreter: auto_silent
+    pi_rc_local_path: /etc/rc/local
+  hosts:
+    192.168.1.16

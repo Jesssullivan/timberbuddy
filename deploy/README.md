@@ -2,19 +2,7 @@
 
 Automated deployments to Timber Buddy controllers.
 
-On the pi w/ pi connect installed and working::
-```
-GITHUB_CLI_VERSION=$(curl -s "https://api.github.com/repos/cli/cli/releases/latest" | grep -Po '"tag_name": "v\K[0-9.]+')
-cd ~
-curl -Lo gh.deb "https://github.com/cli/cli/releases/latest/download/gh_${GITHUB_CLI_VERSION}_linux_armv6.deb"
-sudo dpkg -i gh.deb
-gh --version
-echo 'YOUR GITHUB API TOKEN' > github_token.txt
-gh auth login --with-token < github_token.txt
-gh auth status
-```
-
-Install:
+#### Install:
 
 ```shell
 # @todo: switch this to a proper release strategy
@@ -22,7 +10,42 @@ cd /usr/bin/ && git clone https://github.com/jesssullivan/timberbuddy && cd timb
 # @todo: add automated w/ network check for updates
 sudo chmod +x scripts/setup_venv.sh
 ./scripts/setup_venv.sh && source timber_venv/bin/activate
-ansible-playbook -i inventory_dev -K services.yml --extra-vars "host=raspberrypi" -l "raspberrypi" -u "raspi"
 ```
 
+#### over pi connect remote shell:
+once tailscale is setup, we can ansible the rest of the things
+```shell
+sudo apt update
+sudo apt upgrade -y
+curl -L https://pkgs.tailscale.com/stable/raspbian/$(lsb_release -cs).noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/raspbian $(lsb_release -cs) main" | sudo tee  /etc/apt/sources.list.d/tailscale.list
+sudo apt update
+sudo apt install tailscale
+
+ sudo tailscale up
+ ## log in ##
+  sudo tailscale up -ssh
+```
+
+#### setup interactive auth components:
+```shell
+ansible-playbook -i inventory_dev -K kiosk.yml --extra-vars "host=192.168.1.16" -l "192.168.1.16" -u "jsullivan2"
+```
+
+
+On the pi w/ pi connect installed and working:
+```
+ansible-playbook -i inventory_dev -K services.yml --extra-vars "host=192.168.1.16" -l "192.168.1.16" -u "jsullivan2"
+
+```
+
+
+
+```shell
+
+# for pi connect upon local kiosk role run:
+rpi-connect signin
+# upon provisioning, you may need to play keys time:
+# ssh-copy-id jsullivan2@<192.168.1.16> 
+```
 
