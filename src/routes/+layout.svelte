@@ -47,6 +47,7 @@
 		const response = await fetch('/', {
 			method: 'POST',
 			body: JSON.stringify({
+				key: "odo_value",
 				new_cut_size: Number($odo_value) + 1
 			}),
 			headers: {

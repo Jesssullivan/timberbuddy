@@ -6,4 +6,4 @@ all:
     ansible_python_interpreter: auto_silent
     pi_rc_local_path: /etc/rc/local
   hosts:
-    192.168.1.16
+    raspi-build-4

@@ -17,6 +17,7 @@
 		const response = await fetch('/', {
 			method: 'POST',
 			body: JSON.stringify({
+				key: "stack_height",
 				new_cut_size: $cut_size
 			}),
 			headers: {
