@@ -66,7 +66,7 @@
 
 	const toggle_mode = () => $page.url.pathname.includes('stack') ? goto('/core') : goto('/stack')
 
-	$: core_name = $page.url.pathname.split('/')[1] === '' ?  '🏠 '  :cml($page.url.pathname.split('/')[1] + ' mode')
+	$: core_name = $page.url.pathname.split('/')[1] === '' ?  'Home'  :cml($page.url.pathname.split('/')[1] + ' mode')
 
 	// @todo: copy pasta below to start working on node button io stuff
 
@@ -98,8 +98,8 @@
 				<button
 						class="btn btn-sm variant-ghost-surface"
 				>
-					🪚 <span class="animate-pulse">{$odo_value}</span>
-					<span class="italic"> Stats ⤤</span>
+					 <span class="animate-pulse">{$odo_value}</span>
+					<span class="italic"> Cuts ⤤</span>
 				</button>
 				<button
 					class="btn btn-sm variant-ghost-surface"
