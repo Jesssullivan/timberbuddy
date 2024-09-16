@@ -15,7 +15,7 @@
 	export let data;
 
 	// core store values
-	const defaultOdometerValue = data.read_defaults.core_height;
+	const defaultOdometerValue = data.read_defaults.odo_value;
 
 	const odo_value = writable<string>(defaultOdometerValue);
 
