@@ -27,7 +27,7 @@
     line: ''
   become: true
 #- name: sync boot cmdline script
-# @TODO this will breat build if png is not supplied
+# @TODO this will break build if png is not supplied
 #  template:
 #    src: cmdline.txt
 #    dest: "/boot/firmware/cmdline.txt"
