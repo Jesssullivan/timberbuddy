@@ -11,11 +11,29 @@ cd /usr/bin/ && git clone https://github.com/jesssullivan/timberbuddy && cd timb
 sudo chmod +x scripts/setup_venv.sh
 ./scripts/setup_venv.sh && source timber_venv/bin/activate
 ```
+#### over pi connect remote shell:
+once tailscale is setup, we can ansible the rest of the things
+```shell
+#sudo apt update && sudo apt upgrade -y
+curl -L https://pkgs.tailscale.com/stable/raspbian/$(lsb_release -cs).noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/raspbian $(lsb_release -cs) main" | sudo tee  /etc/apt/sources.list.d/tailscale.list
+sudo apt update
+sudo apt install tailscale
+
+ sudo tailscale up
+ ## log in ##
+  sudo tailscale up -ssh
+```
+
 
 #### On pi w/ tailscale installed and w/ `--ssh` enabled:
 
 ```shell
-ansible-playbook -i inventory_dev -K services.yml --extra-vars "host=timberbuddy-dev" -l "timberbuddy-dev" -u "TimberBuddy"
+ansible-playbook -i inventory_dev -K kiosk.yml --extra-vars "host=raspi-build-4" -l "raspi-build-4" -u "jsullivan2"
+ansible-playbook -i inventory_dev -K pi-setup.yml --extra-vars "host=raspi-build-4" -l "raspi-build-4" -u "jsullivan2"
+ansible-playbook -i inventory_dev -K waveshare-dsi.yml --extra-vars "host=raspi-build-4" -l "raspi-build-4" -u "jsullivan2"
+ansible-playbook -i inventory_dev -K node-server.yml --extra-vars "host=raspi-build-4" -l "raspi-build-4" -u "jsullivan2"
+
 ```
 
 

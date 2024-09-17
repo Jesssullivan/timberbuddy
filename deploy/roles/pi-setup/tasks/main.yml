@@ -17,8 +17,6 @@
     block: |
       dtoverlay=vc4-kms-v3d
       dtoverlay=vc4-kms-dsi-7inch
-      disable_splash=0
-      /sbin/iwconfig wlan0 power off
   become: true
 - name: insert empty line before the marker
   lineinfile:
@@ -27,7 +25,6 @@
     line: ''
   become: true
 #- name: sync boot cmdline script
-# @TODO this will break build if png is not supplied
 #  template:
 #    src: cmdline.txt
 #    dest: "/boot/firmware/cmdline.txt"
@@ -44,16 +41,16 @@
     dest: "~/network_up.sh"
     mode: "+x"
   become: true
-#- name: ensure pix script is updated
-#  template:
-#    src: pix.script
-#    dest: "/usr/share/plymouth/themes/pix/pix.script"
-#  become: yes
-#- name: Place neko girl for startup
-#  synchronize:
-#    src: splash.png
-#    dest: "/usr/share/plymouth/themes/pix/splash.png"
-#  become: yes
+- name: ensure pix script is updated
+  template:
+    src: pix.script
+    dest: "/usr/share/plymouth/themes/pix/pix.script"
+  become: yes
+- name: Place neko girl for startup
+  synchronize:
+    src: splash.png
+    dest: "/usr/share/plymouth/themes/pix/splash.png"
+  become: yes
 - name: Run network persistence every 5 minutes
   become: yes
   become_method: sudo
@@ -65,7 +62,7 @@
     hour: "*"
     job: "./network_up.sh > /log/network.log"
     state: present
-#- name: rebuild boot theme
-#  shell: |
-#    plymouth-set-default-theme --rebuild-initrd pix
-#  become: true
+- name: rebuild boot theme
+  shell: |
+    plymouth-set-default-theme --rebuild-initrd pix
+  become: true
