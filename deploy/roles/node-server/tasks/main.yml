@@ -40,14 +40,17 @@
   stat:
     path: /home/jsullivan2/timberbuddy/.git
   register: stat_result_tb_git
-- name: clone timberbuddy repo
-  shell: |
-    gh repo clone Jesssullivan/timberbuddy
-  when: not stat_result_tb_git.stat.exists
 - name: set upstream and fetch
   shell: |
     git remote set-url origin https://jesssullivan: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@github.com/jesssullivan/timberbuddy
     git pull
+  args:
+    chdir: /home/jsullivan2/timberbuddy/
+  when: stat_result_tb_git.stat.exists
+- name: clone timberbuddy repo
+  shell: |
+    gh repo clone Jesssullivan/timberbuddy
+  when: not stat_result_tb_git.stat.exists
 - name: ensure node depends are installed
   command: /home/jsullivan2/.local/share/pnpm/pnpm install
   args:

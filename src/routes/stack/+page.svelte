@@ -2,11 +2,16 @@
 	import { Equal } from 'lucide-svelte';
 	import {browser} from "$app/environment";
 	import {writable} from "svelte/store";
+	import {onMount} from "svelte";
 	export let data;
 
 	const defaultStackValue = data.read_defaults.stack_height;
 
 	const cut_size = writable<string>(defaultStackValue.toString());
+
+	onMount(async () => {
+		window.localStorage.setItem('cut_size', defaultStackValue)
+	});
 
 	const update_cut_size = async () => {
 		const response = await fetch('/', {
@@ -39,6 +44,7 @@
 
 	const select = (num: number | string) => () => {
 		display_number += num.toString();
+		cut_size.set(display_number)
 	};
 
 	const operation = (sign: number | string) => {
@@ -134,7 +140,6 @@
 					<button on:click={larger_cut} class=" w-64 h-14"><span class="h3">Larger Cut &#8593;</span></button>
 					<button  on:click={smaller_cut} class=" w-64 h-14"><span class="h3">Smaller Cut &#8595;</span> </button>
 				</div>
-
 		</div>
 	</div>
 
