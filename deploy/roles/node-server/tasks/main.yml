@@ -29,7 +29,7 @@
   become: true
 - name: Check if pnpm exists
   stat:
-    path: /home/TimberBuddy/.local/share/pnpm/pnpm
+    path: /home/{{uname}}/.local/share/pnpm/pnpm
   register: stat_result_pnpm
 - name: ensure pnpm is installed
   shell: |
@@ -38,7 +38,7 @@
   when: not stat_result_pnpm.stat.exists
 - name: Check if timberbuddy git repo exists
   stat:
-    path: /home/TimberBuddy/timberbuddy/.git
+    path: /home/{{uname}}/timberbuddy/.git
   register: stat_result_tb_git
 - name: set upstream and fetch
   shell: |
@@ -47,20 +47,20 @@
     git switch remote-dev
     git pull
   args:
-    chdir: /home/TimberBuddy/timberbuddy/
+    chdir: /home/{{uname}}/timberbuddy/
   when: stat_result_tb_git.stat.exists
 - name: clone timberbuddy repo
   shell: |
     gh repo clone Jesssullivan/timberbuddy
   when: not stat_result_tb_git.stat.exists
 - name: ensure node depends are installed
-  command: /home/TimberBuddy/.local/share/pnpm/pnpm install
+  command: /home/{{uname}}/.local/share/pnpm/pnpm install
   args:
-    chdir: /home/TimberBuddy/timberbuddy/
+    chdir: /home/{{uname}}/timberbuddy/
 - name: build timberbuddy
-  command: /home/TimberBuddy/.local/share/pnpm/pnpm run build
+  command: /home/{{uname}}/.local/share/pnpm/pnpm run build
   args:
-    chdir: /home/TimberBuddy/timberbuddy/
+    chdir: /home/{{uname}}/timberbuddy/
 - name: Ensure Timber Buddy control interface service is in place
   template:
     src: TimberBuddyInterfaceService.service.j2

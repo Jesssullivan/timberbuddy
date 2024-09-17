@@ -5,6 +5,6 @@ all:
     address: https://google.com/
     ansible_python_interpreter: auto_silent
     pi_rc_local_path: /etc/rc/local
-    uname: jsullivan2
+    uname: TimberBuddy
   hosts:
-    raspi-build-4
+    timberbuddy-dev
