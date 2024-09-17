@@ -29,7 +29,7 @@
   become: true
 - name: Check if pnpm exists
   stat:
-    path: /home/jsullivan2/.local/share/pnpm/pnpm
+    path: /home/TimberBuddy/.local/share/pnpm/pnpm
   register: stat_result_pnpm
 - name: ensure pnpm is installed
   shell: |
@@ -38,27 +38,27 @@
   when: not stat_result_pnpm.stat.exists
 - name: Check if timberbuddy git repo exists
   stat:
-    path: /home/jsullivan2/timberbuddy/.git
+    path: /home/TimberBuddy/timberbuddy/.git
   register: stat_result_tb_git
 - name: set upstream and fetch
   shell: |
     git remote set-url origin https://jesssullivan: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@github.com/jesssullivan/timberbuddy
     git pull
   args:
-    chdir: /home/jsullivan2/timberbuddy/
+    chdir: /home/TimberBuddy/timberbuddy/
   when: stat_result_tb_git.stat.exists
 - name: clone timberbuddy repo
   shell: |
     gh repo clone Jesssullivan/timberbuddy
   when: not stat_result_tb_git.stat.exists
 - name: ensure node depends are installed
-  command: /home/jsullivan2/.local/share/pnpm/pnpm install
+  command: /home/TimberBuddy/.local/share/pnpm/pnpm install
   args:
-    chdir: /home/jsullivan2/timberbuddy/
+    chdir: /home/TimberBuddy/timberbuddy/
 - name: build timberbuddy
-  command: /home/jsullivan2/.local/share/pnpm/pnpm run build
+  command: /home/TimberBuddy/.local/share/pnpm/pnpm run build
   args:
-    chdir: /home/jsullivan2/timberbuddy/
+    chdir: /home/TimberBuddy/timberbuddy/
 - name: Ensure Timber Buddy control interface service is in place
   template:
     src: TimberBuddyInterfaceService.service.j2
