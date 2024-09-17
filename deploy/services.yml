@@ -2,6 +2,6 @@
 - hosts: all
   roles:
     - role: kiosk
-    - role: pi-setup
-    - role: waveshare-dsi
-    - role: node-server
+#    - role: pi-setup
+#    - role: waveshare-dsi
+#    - role: node-server

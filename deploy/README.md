@@ -15,8 +15,7 @@ sudo chmod +x scripts/setup_venv.sh
 #### over pi connect remote shell:
 once tailscale is setup, we can ansible the rest of the things
 ```shell
-sudo apt update
-sudo apt upgrade -y
+sudo apt update && sudo apt upgrade -y
 curl -L https://pkgs.tailscale.com/stable/raspbian/$(lsb_release -cs).noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
 echo "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/raspbian $(lsb_release -cs) main" | sudo tee  /etc/apt/sources.list.d/tailscale.list
 sudo apt update
@@ -29,7 +28,7 @@ sudo apt install tailscale
 
 #### setup interactive auth components:
 ```shell
-ansible-playbook -i inventory_dev -K kiosk.yml --extra-vars "host=192.168.1.16" -l "192.168.1.16" -u "jsullivan2"
+ansible-playbook -i inventory_dev -K serices.yml --extra-vars "host=timberbuddy-dev" -l "timberbuddy-dev" -u "TimberBuddy"
 ```
 
 

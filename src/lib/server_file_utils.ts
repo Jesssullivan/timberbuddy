@@ -18,7 +18,6 @@ export const write_update_value = (key: string | number, value: string) => {
     f[key] = value;
     try {
         fs.writeFileSync('store.json', JSON.stringify(f))
-        console.log('updated store!');
     } catch (e) {
         console.log('unable to update store: ', e);
     }

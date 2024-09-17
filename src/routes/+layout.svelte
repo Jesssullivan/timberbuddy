@@ -17,6 +17,10 @@
 	// core store values
 	const defaultOdometerValue = data.read_defaults.odo_value;
 
+	onMount(async () => {
+		window.localStorage.setItem('odo_value', defaultOdometerValue);
+	});
+
 	const odo_value = writable<string>(defaultOdometerValue);
 
 	odo_value.subscribe((value) => {
@@ -28,6 +32,7 @@
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
+	import {onMount} from "svelte";
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 
