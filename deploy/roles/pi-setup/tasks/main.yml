@@ -26,11 +26,12 @@
     insertbefore: '^# TIMBERBUDDY ANSIBLE MANAGED BLOCK$'
     line: ''
   become: true
-- name: sync boot cmdline script
-  template:
-    src: cmdline.txt
-    dest: "/boot/firmware/cmdline.txt"
-  become: yes
+#- name: sync boot cmdline script
+# @TODO this will breat build if png is not supplied
+#  template:
+#    src: cmdline.txt
+#    dest: "/boot/firmware/cmdline.txt"
+#  become: yes
 - name: install pre depends
   apt:
     pkg:
