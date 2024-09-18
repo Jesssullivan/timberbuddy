@@ -27,3 +27,7 @@
     echo 0 | sudo tee /sys/class/backlight/*/brightness && sleep 1
     echo 100 | sudo tee /sys/class/backlight/*/brightness && sleep 1
     echo 200 | sudo tee /sys/class/backlight/*/brightness
+- name: reboot the machine
+  reboot:
+    reboot_timeout: 300
+  become: true

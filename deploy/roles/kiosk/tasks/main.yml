@@ -54,3 +54,7 @@
     src: defaults.ini.j2
     dest: /etc/wayfire/defaults.ini
   become: true
+- name: reboot the machine
+  reboot:
+    reboot_timeout: 300
+  become: true
