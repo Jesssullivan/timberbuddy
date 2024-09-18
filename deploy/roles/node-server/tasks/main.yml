@@ -77,3 +77,7 @@
     name: TimberBuddyInterfaceService
     state: started
   become: yes
+- name: reboot the machine
+  reboot:
+    reboot_timeout: 300
+  become: true

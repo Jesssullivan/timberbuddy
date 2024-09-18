@@ -24,11 +24,6 @@
     insertbefore: '^# TIMBERBUDDY ANSIBLE MANAGED BLOCK$'
     line: ''
   become: true
-#- name: sync boot cmdline script
-#  template:
-#    src: cmdline.txt
-#    dest: "/boot/firmware/cmdline.txt"
-#  become: yes
 - name: install pre depends
   apt:
     pkg:
@@ -41,19 +36,8 @@
     dest: "~/network_up.sh"
     mode: "+x"
   become: true
-- name: ensure pix script is updated
-  template:
-    src: pix.script
-    dest: "/usr/share/plymouth/themes/pix/pix.script"
-  become: yes
-- name: Place neko girl for startup
-  synchronize:
-    src: splash.png
-    dest: "/usr/share/plymouth/themes/pix/splash.png"
-  become: yes
 - name: Run network persistence every 5 minutes
   become: yes
-  become_method: sudo
   cron:
     name: "net_persist"
     user: "root"
@@ -62,7 +46,26 @@
     hour: "*"
     job: "./network_up.sh > /log/network.log"
     state: present
-- name: rebuild boot theme
-  shell: |
-    plymouth-set-default-theme --rebuild-initrd pix
+#- name: sync boot cmdline script
+#  template:
+#    src: cmdline.txt
+#    dest: "/boot/firmware/cmdline.txt"
+#  become: yes
+#- name: ensure pix script is updated
+#  template:
+#    src: pix.script
+#    dest: "/usr/share/plymouth/themes/pix/pix.script"
+#  become: yes
+#- name: Place neko girl for startup
+#  synchronize:
+#    src: pix.png
+#    dest: "/usr/share/plymouth/themes/pix/splash.png"
+#  become: yes
+#- name: rebuild boot theme
+#  shell: |
+#    plymouth-set-default-theme --rebuild-initrd pix
+#  become: true
+- name: reboot the machine
+  reboot:
+    reboot_timeout: 300
   become: true

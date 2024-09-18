@@ -4,8 +4,8 @@ After=ssh.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/node /home/jsullivan2/timberbuddy/server/index.js
-WorkingDirectory=/home/jsullivan2/timberbuddy/
+ExecStart=/usr/bin/node /home/{{uname}}/timberbuddy/server/index.js
+WorkingDirectory=/home/{{uname}}/timberbuddy/
 Restart=on-failure
 RestartSec=5
 
