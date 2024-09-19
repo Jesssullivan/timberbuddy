@@ -13,7 +13,7 @@
     wget https://files.waveshare.com/upload/f/f4/Brightness.zip
     unzip Brightness.zip
     cd Brightness
-    sudo chmod +x install.sh
+    chmod +x install.sh
     ./install.sh
   when: not stat_result_brightness.stat.exists
   become: true

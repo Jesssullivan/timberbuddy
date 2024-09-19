@@ -1,9 +1,4 @@
 ---
-#- name: sync boot cmdline script
-#  template:
-#    src: cmdline.txt
-#    dest: "/boot/firmware/cmdline.txt"
-#  become: yes
 - name: ensure pix script is updated
   template:
     src: pix.script
@@ -14,15 +9,15 @@
     src: splash.png
     dest: "/usr/share/plymouth/themes/pix/splash.png"
   become: yes
-- name: reboot the machine
-  reboot:
-    reboot_timeout: 300
-  become: true
-#- name: rebuild boot theme
-#  shell: |
-#    plymouth-set-default-theme --rebuild-initrd pix
-#  become: true
 #- name: reboot the machine
 #  reboot:
 #    reboot_timeout: 300
 #  become: true
+- name: rebuild boot theme
+  shell: |
+    plymouth-set-default-theme -R pix
+  become: true
+- name: reboot the machine
+  reboot:
+    reboot_timeout: 300
+  become: true

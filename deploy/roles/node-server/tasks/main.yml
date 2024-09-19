@@ -71,11 +71,17 @@
   systemd:
     name: TimberBuddyInterfaceService
     state: stopped
+    enabled: true
   become: yes
+- name: force systemd to reread configs
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  become: true
 - name: Ensure Timber Buddy Interface Service is running
   systemd:
     name: TimberBuddyInterfaceService
     state: started
+    enabled: true
   become: yes
 - name: reboot the machine
   reboot:

@@ -17,6 +17,7 @@
     block: |
       dtoverlay=vc4-kms-v3d
       dtoverlay=vc4-kms-dsi-7inch
+      disable_splash=1
   become: true
 - name: insert empty line before the marker
   lineinfile:
@@ -46,25 +47,6 @@
     hour: "*"
     job: "./network_up.sh > /log/network.log"
     state: present
-#- name: sync boot cmdline script
-#  template:
-#    src: cmdline.txt
-#    dest: "/boot/firmware/cmdline.txt"
-#  become: yes
-#- name: ensure pix script is updated
-#  template:
-#    src: pix.script
-#    dest: "/usr/share/plymouth/themes/pix/pix.script"
-#  become: yes
-#- name: Place neko girl for startup
-#  synchronize:
-#    src: pix.png
-#    dest: "/usr/share/plymouth/themes/pix/splash.png"
-#  become: yes
-#- name: rebuild boot theme
-#  shell: |
-#    plymouth-set-default-theme --rebuild-initrd pix
-#  become: true
 - name: reboot the machine
   reboot:
     reboot_timeout: 300
