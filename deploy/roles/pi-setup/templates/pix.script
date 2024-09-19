@@ -38,7 +38,13 @@ if (Plymouth.GetMode() != "shutdown")
         sprite.SetPosition (image_x, image_y, -100);
 }
 
+message_sprite = Sprite();
+message_sprite.SetPosition(screen_width * 0.1, screen_height * 0.9, 10000);
+
 fun message_callback (text) {
+        my_image = Image.Text(text, 1, 1, 1);
+        message_sprite.SetImage(my_image);
+}
         sprite.SetImage (resized_image);
 }
 

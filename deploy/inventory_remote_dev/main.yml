@@ -7,4 +7,4 @@ all:
     pi_rc_local_path: /etc/rc/local
     uname: TimberBuddy
   hosts:
-    timberbuddy-dev
+    remote-dev
