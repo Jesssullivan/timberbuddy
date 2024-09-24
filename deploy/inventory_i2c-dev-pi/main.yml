@@ -6,5 +6,6 @@ all:
     ansible_python_interpreter: auto_silent
     pi_rc_local_path: /etc/rc/local
     uname: jsullivan2
+    gh_push_key: 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
   hosts:
     i2c-dev-pi
