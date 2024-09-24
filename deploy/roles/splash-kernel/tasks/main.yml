@@ -1,4 +1,5 @@
 ---
+## @todo add sed -i `"s~console=tty1~console=tty3~" /boot/firmware/cmdline.txt` task
 - name: ensure pix script is updated
   template:
     src: pix.script
