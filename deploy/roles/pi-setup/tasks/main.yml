@@ -17,7 +17,6 @@
     block: |
       dtoverlay=vc4-kms-v3d
       dtoverlay=vc4-kms-dsi-7inch
-      disable_splash=1
   become: true
 - name: insert empty line before the marker
   lineinfile:
