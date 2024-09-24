@@ -58,6 +58,7 @@
     "raspi-board": "^7.4.0",
     "raspi-gpio": "^6.2.2",
     "raspi-i2c": "^6.2.4",
-    "raspi-led": "^2.1.2"
+    "raspi-led": "^2.1.2",
+    "i2c": "^0.2.5"
   }
 }
