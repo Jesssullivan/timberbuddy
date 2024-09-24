@@ -1,3 +1,11 @@
 #!/bin/bash
-sleep 2
-#/bin/chromium-browser  --kiosk --ozone-platform=wayland --start-maximized --noerrdialogs --disable-infobars --enable-features=OverlayScrollbar http://localhost:3000 &
+#sleep 2
+/bin/chromium-browser  --kiosk \
+    --disable-pinch \
+    --overscroll-history-navigation=0 \
+    --ozone-platform=wayland \
+    --start-maximized \
+    --noerrdialogs \
+    --disable-infobars \
+    --enable-features=OverlayScrollbar \
+    http://localhost:3000 &

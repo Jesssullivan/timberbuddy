@@ -43,7 +43,7 @@
   register: stat_result_tb_git
 - name: set upstream and fetch
   shell: |
-    git remote set-url origin https://jesssullivan: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@github.com/jesssullivan/timberbuddy
+    git remote set-url origin https://jesssullivan:{{github_pat}}@github.com/jesssullivan/timberbuddy
     git fetch
     git switch remote-dev
     git pull
