@@ -10,10 +10,6 @@
     src: splash.png
     dest: "/usr/share/plymouth/themes/pix/splash.png"
   become: yes
-#- name: reboot the machine
-#  reboot:
-#    reboot_timeout: 300
-#  become: true
 - name: rebuild boot theme
   shell: |
     plymouth-set-default-theme -R pix
