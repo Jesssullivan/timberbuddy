@@ -2,9 +2,12 @@
 all:
   # TB Embedded vars:
   vars:
+    uname: jsullivan2
     address: https://google.com/
+    wayfire_defaults_ini_path: /etc/wayfire/defaults.ini
+    wayfire_ini_path: /home/{{uname}}/.config/wayfire.ini
     ansible_python_interpreter: auto_silent
     pi_rc_local_path: /etc/rc/local
-    uname: jsullivan2
+    github_pat: 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
   hosts:
     local-dev-beta
