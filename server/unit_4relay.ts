@@ -6,43 +6,47 @@ const UNIT_4RELAY_REG = 0x10;
 const UNIT_4RELAY_RELAY_REG = 0x11;
 
 class UNIT_4RELAY {
-    constructor(busNumber = 1, sda = null, scl = null) {
+    private _i2c: I2C;
+    private _sda: number | null;
+    private _scl: number | null;
+
+    constructor(busNumber: number = 1, sda: number | null = null, scl: number | null = null) {
         this._i2c = new I2C();
         this._sda = sda;
         this._scl = scl;
     }
 
-    write1Byte(address, registerAddress, data) {
+    write1Byte(address: number, registerAddress: number, data: number): void {
         this._i2c.writeByteSync(address, registerAddress, data);
     }
 
-    read1Byte(address, registerAddress) {
+    read1Byte(address: number, registerAddress: number): number {
         return this._i2c.readByteSync(address, registerAddress);
     }
 
-    begin() {
+    begin(): boolean {
         // Initialization is handled in the constructor with new I2C instance
         return true; // Assume it always succeeds
     }
 
-    Init(mode) {
+    Init(mode: number): void {
         this.write1Byte(UNIT_4RELAY_ADDR, UNIT_4RELAY_REG, mode);
         this.write1Byte(UNIT_4RELAY_ADDR, UNIT_4RELAY_RELAY_REG, 0);
     }
 
-    switchMode(mode) {
+    switchMode(mode: number): void {
         this.write1Byte(UNIT_4RELAY_ADDR, UNIT_4RELAY_REG, mode);
     }
 
-    relayAll(state) {
+    relayAll(state: number): void {
         this.write1Byte(UNIT_4RELAY_ADDR, UNIT_4RELAY_RELAY_REG, state * 0x0f);
     }
 
-    ledAll(state) {
+    ledAll(state: number): void {
         this.write1Byte(UNIT_4RELAY_ADDR, UNIT_4RELAY_RELAY_REG, state * 0xf0);
     }
 
-    relayWrite(number, state) {
+    relayWrite(number: number, state: number): void {
         let StateFromDevice = this.read1Byte(UNIT_4RELAY_ADDR, UNIT_4RELAY_RELAY_REG);
         if (state === 0) {
             StateFromDevice &= ~(0x01 << number);
@@ -52,7 +56,7 @@ class UNIT_4RELAY {
         this.write1Byte(UNIT_4RELAY_ADDR, UNIT_4RELAY_RELAY_REG, StateFromDevice);
     }
 
-    ledWrite(number, state) {
+    ledWrite(number: number, state: number): void {
         let StateFromDevice = this.read1Byte(UNIT_4RELAY_ADDR, UNIT_4RELAY_RELAY_REG);
         if (state === 0) {
             StateFromDevice &= ~(UNIT_4RELAY_REG << number);
@@ -64,11 +68,11 @@ class UNIT_4RELAY {
 }
 
 // Usage Example:
-const relay = new UNIT_4RELAY();
-relay.begin();
-relay.Init(0);           // Set mode to Async and turn off all relays
-relay.switchMode(1);     // Switch to Sync mode
-relay.relayAll(1);       // Turn all relays on
-relay.ledAll(1);         // Turn all LEDs on
-relay.relayWrite(2, 1);  // Turn on relay 2
-relay.ledWrite(1, 0);    // Turn off LED 1
+//const relay = new UNIT_4RELAY();
+//relay.begin();
+//relay.Init(0);           // Set mode to Async and turn off all relays
+//relay.switchMode(1);     // Switch to Sync mode
+//relay.relayAll(1);       // Turn all relays on
+//relay.ledAll(1);         // Turn all LEDs on
+//relay.relayWrite(2, 1);  // Turn on relay 2
+//relay.ledWrite(1, 0);    // Turn off LED 1
