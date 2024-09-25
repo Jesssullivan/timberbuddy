@@ -1,5 +1,3 @@
-import smbus
-
 # Constants from the original C++ header file
 UNIT_4RELAY_ADDR = 0x26
 UNIT_4RELAY_REG = 0x10
