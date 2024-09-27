@@ -1,0 +1,20 @@
+---
+## @todo add sed -i `"s~console=tty1~console=tty3~" /boot/firmware/cmdline.txt` task
+- name: ensure pix script is updated
+  template:
+    src: pix.script
+    dest: "/usr/share/plymouth/themes/pix/pix.script"
+  become: yes
+- name: Place neko girl for startup
+  synchronize:
+    src: splash.png
+    dest: "/usr/share/plymouth/themes/pix/splash.png"
+  become: yes
+- name: rebuild boot theme
+  shell: |
+    plymouth-set-default-theme -R pix
+  become: true
+- name: reboot the machine
+  reboot:
+    reboot_timeout: 300
+  become: true

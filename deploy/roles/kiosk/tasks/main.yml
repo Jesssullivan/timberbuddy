@@ -41,16 +41,20 @@
 - name: ensure kiosk mode by updating wayfire.ini
   template:
     src: wayfire_kiosk.ini.j2
-    dest: /home/TimberBuddy/.config/wayfire.ini
+    dest: /home/{{uname}}/.config/wayfire.ini
   become: true
 - name: ensure kiosk script is in place
   template:
     src: kiosk.sh.j2
-    dest: /home/TimberBuddy/kiosk.sh
+    dest: /home/{{uname}}/kiosk.sh
     mode: "+x"
   become: true
 - name: ensure revised wayfire defaults are in place
   template:
     src: defaults.ini.j2
     dest: /etc/wayfire/defaults.ini
+  become: true
+- name: reboot the machine
+  reboot:
+    reboot_timeout: 300
   become: true

@@ -13,7 +13,8 @@
 - name: ensure node gpg key is in place
   shell: |
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/nodesource.gpg
-    echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+    echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
   become: true
   when: not stat_result_nodesource.stat.exists
 - name: Update all packages to their latest version
@@ -29,7 +30,7 @@
   become: true
 - name: Check if pnpm exists
   stat:
-    path: /home/TimberBuddy/.local/share/pnpm/pnpm
+    path: /home/{{uname}}/.local/share/pnpm/pnpm
   register: stat_result_pnpm
 - name: ensure pnpm is installed
   shell: |
@@ -38,29 +39,29 @@
   when: not stat_result_pnpm.stat.exists
 - name: Check if timberbuddy git repo exists
   stat:
-    path: /home/TimberBuddy/timberbuddy/.git
+    path: /home/{{uname}}/timberbuddy/.git
   register: stat_result_tb_git
 - name: set upstream and fetch
   shell: |
-    git remote set-url origin https://jesssullivan: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@github.com/jesssullivan/timberbuddy
+    git remote set-url origin https://jesssullivan:{{github_pat}}@github.com/jesssullivan/timberbuddy
     git fetch
-    git switch remote-dev
+    git switch {{branch}}
     git pull
   args:
-    chdir: /home/TimberBuddy/timberbuddy/
+    chdir: /home/{{uname}}/timberbuddy/
   when: stat_result_tb_git.stat.exists
 - name: clone timberbuddy repo
   shell: |
     gh repo clone Jesssullivan/timberbuddy
   when: not stat_result_tb_git.stat.exists
 - name: ensure node depends are installed
-  command: /home/TimberBuddy/.local/share/pnpm/pnpm install
+  command: /home/{{uname}}/.local/share/pnpm/pnpm install
   args:
-    chdir: /home/TimberBuddy/timberbuddy/
+    chdir: /home/{{uname}}/timberbuddy/
 - name: build timberbuddy
-  command: /home/TimberBuddy/.local/share/pnpm/pnpm run build
+  command: /home/{{uname}}/.local/share/pnpm/pnpm run build
   args:
-    chdir: /home/TimberBuddy/timberbuddy/
+    chdir: /home/{{uname}}/timberbuddy/
 - name: Ensure Timber Buddy control interface service is in place
   template:
     src: TimberBuddyInterfaceService.service.j2
@@ -71,9 +72,19 @@
   systemd:
     name: TimberBuddyInterfaceService
     state: stopped
+    enabled: true
   become: yes
+- name: force systemd to reread configs
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  become: true
 - name: Ensure Timber Buddy Interface Service is running
   systemd:
     name: TimberBuddyInterfaceService
     state: started
+    enabled: true
   become: yes
+- name: reboot the machine
+  reboot:
+    reboot_timeout: 300
+  become: true

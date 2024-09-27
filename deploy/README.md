@@ -2,6 +2,7 @@
 
 Automated deployments to Timber Buddy controllers.
 
+
 #### Install:
 
 ```shell
@@ -11,11 +12,23 @@ cd /usr/bin/ && git clone https://github.com/jesssullivan/timberbuddy && cd timb
 sudo chmod +x scripts/setup_venv.sh
 ./scripts/setup_venv.sh && source timber_venv/bin/activate
 ```
+#### over pi connect remote shell:
+once tailscale is setup, we can ansible the rest of the things
+```shell
+#sudo apt update && sudo apt upgrade -y
+curl -L https://pkgs.tailscale.com/stable/raspbian/$(lsb_release -cs).noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null && \
+  echo "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/raspbian $(lsb_release -cs) main" | sudo tee  /etc/apt/sources.list.d/tailscale.list && 
+  sudo apt update && sudo apt install tailscale 
+
+ ## log in ##
+  sudo tailscale up -ssh
+```
+
 
 #### On pi w/ tailscale installed and w/ `--ssh` enabled:
 
 ```shell
-ansible-playbook -i inventory_dev -K services.yml --extra-vars "host=timberbuddy-dev" -l "timberbuddy-dev" -u "TimberBuddy"
+ansible-playbook -i inventory_i2c-dev-pi -K services.yml -v
 ```
 
 
@@ -24,6 +37,5 @@ ansible-playbook -i inventory_dev -K services.yml --extra-vars "host=timberbuddy
 # for pi connect upon local kiosk role run:
 rpi-connect signin
 # upon provisioning, you may need to play keys time:
-# ssh-copy-id jsullivan2@<192.168.1.16> 
+# ssh-copy-id TimberBuddy@<192.168.1.16> 
 ```
-
