@@ -45,7 +45,7 @@
   shell: |
     git remote set-url origin https://jesssullivan:{{github_pat}}@github.com/jesssullivan/timberbuddy
     git fetch
-    git switch remote-dev
+    git switch {{branch}}
     git pull
   args:
     chdir: /home/{{uname}}/timberbuddy/

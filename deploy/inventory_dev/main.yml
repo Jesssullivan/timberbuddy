@@ -9,5 +9,6 @@ all:
     ansible_python_interpreter: auto_silent
     pi_rc_local_path: /etc/rc/local
     github_pat: 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
+    branch: dev
   hosts:
     local-dev-beta

@@ -8,5 +8,6 @@ all:
     uname: jsullivan2
     github_pat: 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
     gh_push_key: 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
+    branch: dev
   hosts:
     i2c-dev-pi
