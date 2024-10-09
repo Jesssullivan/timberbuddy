@@ -29,6 +29,8 @@ curl -L https://pkgs.tailscale.com/stable/raspbian/$(lsb_release -cs).noarmor.gp
 
 ```shell
 ansible-playbook -i inventory_i2c-dev-pi -K services.yml -v
+ansible-playbook -i inventory_remote_dev -K services.yml --extra-vars "host=timberbuddy-dev" -l "timberbuddy-dev" -u "TimberBuddy"
+
 ```
 
 

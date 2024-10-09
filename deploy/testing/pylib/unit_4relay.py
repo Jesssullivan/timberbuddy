@@ -1,4 +1,7 @@
 # Constants from the original C++ header file
+import smbus
+import time
+
 UNIT_4RELAY_ADDR = 0x26
 UNIT_4RELAY_REG = 0x10
 UNIT_4RELAY_RELAY_REG = 0x11

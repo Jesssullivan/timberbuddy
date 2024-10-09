@@ -1,5 +1,5 @@
 <script lang="ts">
-
+	import io from 'socket.io-client';
 	import '../app.postcss';
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
@@ -68,19 +68,34 @@
 
 	$: core_name = $page.url.pathname.split('/')[1] === '' ?  'Home'  :cml($page.url.pathname.split('/')[1] + ' mode')
 
-	// @todo: copy pasta below to start working on node button io stuff
+	const socket = io(); //load socket.io-client and connect to the host that serves the page
 
-	// const socket = io(); //load socket.io-client and connect to the host that serves the page
-	// window.addEventListener("load", function(){ //when page loads
-	// 	var lightbox = document.getElementById("light");
-	// 	lightbox.addEventListener("change", function() { //add event listener for when checkbox changes
-	// 		socket.emit("light", Number(this.checked)); //send button status to server (as 1 or 0)
-	// 	});
-	// });
-	// socket.on('light', function (data) { //get button status from client
-	// 	document.getElementById("light").checked = data; //change checkbox according to push button on Raspberry Pi
-	// 	socket.emit("light", data); //send push button status to back to server
-	// });
+	const socketBtnHandler = (el_id: string, socket_id=el_id) => {
+		const handleBtnEl = document.getElementById(el_id);
+		if (handleBtnEl) {
+			// handle socket tx:
+			handleBtnEl.addEventListener("click", () => {
+				socket.emit(socket_id, true);
+			});
+			// handle socket rx:
+			socket.on(socket_id, (data) => {
+				if (data) {
+					handleBtnEl.click();
+					handleBtnEl.style.opacity = '40%';
+				} else {
+					handleBtnEl.style.opacity = '100%';
+				}
+			});
+		}
+	}
+
+	onMount(() => {
+		socketBtnHandler('nextCutBtn');
+		socketBtnHandler('setRefBtn');
+		socketBtnHandler('toggleBtn');
+		socketBtnHandler('raiseBtn');
+
+	});
 
 </script>
 
@@ -133,22 +148,26 @@
 				<div class="grid grid-cols-4 font-bold -mr-4 border-2">
 				<button on:click={add_cut}
 					class=" btn rounded-none variant-ghost-success !py-6 md:text-xl xl:!text-2xl !px-8"
+					id="nextCutBtn"
 				>
 					<span>
 						Next Cut </span>
 				</button>
 				<button
 					class=" btn rounded-none variant-ghost-secondary   md:text-xl xl:!text-2xl !px-8"
+					id="setRefBtn"
 				>
 					Set Ref
 				</button>
 				<button on:click={toggle_mode}
-					class=" btn rounded-none variant-ghost-surface  md:text-xl xl:!text-2xl "
+					class=" btn rounded-none variant-ghost-surface  md:text-xl xl:!text-2xl"
+					id="toggleModeBtn"
 				>
 					Toggle Mode
 				</button>
 					<button
 						class="btn rounded-none variant-ghost-warning  md:text-xl xl:!text-2xl !px-8"
+						id="raiseBtn"
 					>
 						Raise
 					</button>

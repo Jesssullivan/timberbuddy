@@ -1,25 +1,20 @@
-import express, { Express } from 'express';
-import { createServer, Server as HttpServer } from 'http';
-import { Server as SocketIOServer, Socket } from 'socket.io';
-import { Gpio } from 'onoff';
-import { handler } from '../build/handler.js';
-//
-//const LED = new Gpio(4, 'out'); // Use GPIO pin 4 as output
-//const pushButton = new Gpio(17, 'in', 'both'); // Use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
+import express from 'express'
+import { createServer } from 'http'
+import { Server } from 'socket.io'
 
-const port = 3000;
+import { handler } from '../build/handler.js'
 
-const app: Express = express();
-const index: HttpServer = createServer(app);
+const port = 3000
 
-const io: SocketIOServer = new SocketIOServer(index);
+const app = express()
+const index = createServer(app)
 
-io.on('connection', (socket: Socket) => {
-    socket.emit('eventFromServer', 'Sockets are live! 👋');
-});
+const io = new Server(index)
 
-app.use(handler);
+io.on('connection', (socket) => {
+    socket.emit('eventFromServer', 'Sockets are live! 👋')
+})
 
-index.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+app.use(handler)
+
+index.listen(port)
