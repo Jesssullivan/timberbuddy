@@ -5,7 +5,7 @@ const UNIT_4RELAY_ADDR = 0x26;
 const UNIT_4RELAY_REG = 0x10;
 const UNIT_4RELAY_RELAY_REG = 0x11;
 
-class UNIT_4RELAY {
+export default class UNIT_4RELAY {
     private _i2c: I2C;
     private _sda: number | null;
     private _scl: number | null;
@@ -67,12 +67,13 @@ class UNIT_4RELAY {
     }
 }
 
-// Usage Example:
-//const relay = new UNIT_4RELAY();
-//relay.begin();
-//relay.Init(0);           // Set mode to Async and turn off all relays
-//relay.switchMode(1);     // Switch to Sync mode
-//relay.relayAll(1);       // Turn all relays on
-//relay.ledAll(1);         // Turn all LEDs on
-//relay.relayWrite(2, 1);  // Turn on relay 2
-//relay.ledWrite(1, 0);    // Turn off LED 1
+const relay = new UNIT_4RELAY();
+relay.begin();
+relay.Init(0);           // Set mode to Async and turn off all relays
+relay.switchMode(1);     // Switch to Sync mode
+relay.relayAll(1);       // Turn all relays on
+relay.relayAll(0);       // Turn all relays on
+
+relay.ledAll(1);         // Turn all LEDs on
+relay.relayWrite(2, 1);  // Turn on relay 2
+relay.ledWrite(1, 0);    // Turn off LED 1
