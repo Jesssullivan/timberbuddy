@@ -71,30 +71,32 @@
 	const socket = io(); //load socket.io-client and connect to the host that serves the page
 
 	const socketBtnHandler = (el_id: string, socket_id=el_id) => {
-		const handleBtnEl = document.getElementById(el_id);
+
+		const handleBtnEl: HTMLButtonElement = document.getElementById(el_id) as HTMLButtonElement;
+
 		if (handleBtnEl) {
 			// handle socket tx:
 			handleBtnEl.addEventListener("click", () => {
 				socket.emit(socket_id, true);
+				handleBtnEl.disabled=true;
 			});
 			// handle socket rx:
 			socket.on(socket_id, (data) => {
 				if (data) {
 					handleBtnEl.click();
-					handleBtnEl.style.opacity = '40%';
+					handleBtnEl.disabled=true;
 				} else {
-					handleBtnEl.style.opacity = '100%';
+					handleBtnEl.disabled=false;
 				}
 			});
 		}
 	}
 
 	onMount(() => {
+		socketBtnHandler('raiseBtn');
 		socketBtnHandler('nextCutBtn');
 		socketBtnHandler('setRefBtn');
 		socketBtnHandler('toggleBtn');
-		socketBtnHandler('raiseBtn');
-
 	});
 
 </script>
@@ -154,23 +156,23 @@
 						Next Cut </span>
 				</button>
 				<button
-					class=" btn rounded-none variant-ghost-secondary   md:text-xl xl:!text-2xl !px-8"
+					class=" btn rounded-none variant-ghost-secondary md:text-xl xl:!text-2xl !px-8"
 					id="setRefBtn"
 				>
 					Set Ref
 				</button>
 				<button on:click={toggle_mode}
-					class=" btn rounded-none variant-ghost-surface  md:text-xl xl:!text-2xl"
-					id="toggleModeBtn"
+					class=" btn rounded-none variant-ghost-surface md:text-xl xl:!text-2xl"
+					id="toggleBtn"
 				>
 					Toggle Mode
 				</button>
-					<button
-						class="btn rounded-none variant-ghost-warning  md:text-xl xl:!text-2xl !px-8"
-						id="raiseBtn"
-					>
-						Raise
-					</button>
+				<button
+					class=" btn rounded-none variant-ghost-warning md:text-xl xl:!text-2xl !px-8"
+					id="raiseBtn"
+				>
+					Raise
+				</button>
 				</div>
 			</svelte:fragment>
 

@@ -40,36 +40,27 @@ io.sockets.on('connection', (socket: Socket) => {
   // we'll emit false when a task is complete,
   // we'll remain true while a task is completing
 
-  let nextCutBtnRunning: boolean = false;
-  let setRefBtnRunning: boolean = false;
-  let toggleBtnRunning: boolean = false;
-  let raiseBtnRunning: boolean = false;
-
   // hardware socket handlers:
   console.log('socket connection is live...')
   process.stdin.on('keypress', (chunk, key) => {
 
     if (key && key.name === 'n') {
-      nextCutBtnRunning = true;
-      socket.emit('nextCutBtn', nextCutBtnRunning);
+      socket.emit('nextCutBtn', true);
       console.log('Hardware: received Next Cut socket command')
      }
 
     if (key && key.name === 's') {
-      setRefBtnRunning = true;
-      socket.emit('setRefBtn', setRefBtnRunning);
+      socket.emit('setRefBtn', true);
       console.log('Hardware: received Set Ref socket command')
     }
 
     if (key && key.name === 't') {
-      toggleBtnRunning = true;
-      socket.emit('toggleBtn', toggleBtnRunning);
+      socket.emit('toggleBtn', true);
       console.log('Hardware: received Toggle Mode command')
     }
 
     if (key && key.name === 'r') {
-      raiseBtnRunning = true;
-      socket.emit('raiseBtn', raiseBtnRunning);
+      socket.emit('raiseBtn', true);
       console.log('Hardware: received Raise command')
     }
 
@@ -78,15 +69,40 @@ io.sockets.on('connection', (socket: Socket) => {
     }
   });
 
-  // client socket handlers:
-  socket.on('nextCutBtn', (data: boolean) => { // Get light switch status from client
-    nextCutBtnRunning = data;
-    if (nextCutBtnRunning) {
-      console.log('preforming next cut sequence...')
+  // client socket handlers
+  socket.on('nextCutBtn', (data: boolean) => {
+    if (data) {
+      console.log('Sawmill: preforming Next Cut sequence...')
       stdDelay(1000).then(() => {
-        console.log('...completed next cut sequence')
-        nextCutBtnRunning = false;
-        socket.emit('nextCutBtn', raiseBtnRunning);
+        console.log('Sawmill: ...completed Next Cut sequence')
+        socket.emit('nextCutBtn', false);
+      })
+    }
+  });
+  socket.on('setRefBtn', (data: boolean) => {
+    if (data) {
+      console.log('Sawmill: preforming Set Ref sequence...')
+      stdDelay(1500).then(() => {
+        console.log('Sawmill: ...completed Set Ref cut sequence')
+        socket.emit('setRefBtn', false);
+      })
+    }
+  });
+  socket.on('toggleBtn', (data: boolean) => {
+    if (data) {
+      console.log('Sawmill: preforming Toggle Mode sequence...')
+      stdDelay(1000).then(() => {
+        console.log('Sawmill: ...completed Toggle Mode sequence')
+        socket.emit('toggleBtn', false);
+      })
+    }
+  });
+  socket.on('raiseBtn', (data: boolean) => {
+    if (data) {
+      console.log('Sawmill: preforming Raise sequence...')
+      stdDelay(1000).then(() => {
+        console.log('Sawmill: ...completed Raise sequence')
+        socket.emit('raiseBtn', false);
       })
     }
   });
