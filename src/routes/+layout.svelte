@@ -78,15 +78,11 @@
 			// handle socket tx:
 			handleBtnEl.addEventListener("click", () => {
 				socket.emit(socket_id, true);
-				handleBtnEl.disabled=true;
 			});
 			// handle socket rx:
 			socket.on(socket_id, (data) => {
 				if (data) {
 					handleBtnEl.click();
-					handleBtnEl.disabled=true;
-				} else {
-					handleBtnEl.disabled=false;
 				}
 			});
 		}

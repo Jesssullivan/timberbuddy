@@ -46,6 +46,7 @@ io.sockets.on('connection', (socket: Socket) => {
 
     if (key && key.name === 'n') {
       socket.emit('nextCutBtn', true);
+      relay.relayWrite(2, 1);  // Turn on relay 2
       console.log('Hardware: received Next Cut socket command')
      }
 
