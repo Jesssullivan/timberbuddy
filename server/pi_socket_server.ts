@@ -7,10 +7,10 @@ import {Gpio} from 'onoff';
 
 const relayBank = new UNIT_4RELAY();
 
-const nextCut = new Gpio(597, 'in', 'rising', {debounceTimeout: 10});
-const setRef = new Gpio(587, 'in', 'rising', {debounceTimeout: 10}); // 36
-const toggleMode = new Gpio(590, 'in', 'rising', {debounceTimeout: 10}); // 37
-const raiseSaw = new Gpio(591, 'in', 'rising', {debounceTimeout: 10}); // 38
+const nextCut = new Gpio(590,'in', 'both', 'rising', {debounceTimeout: 10});
+const setRef = new Gpio(587, 'in', 'both', 'rising', {debounceTimeout: 10}); // 36
+const toggleMode = new Gpio(591,'in', 'both', 'rising', {debounceTimeout: 10}); // 37
+const raiseSaw = new Gpio(597, 'in', 'both', 'rising', {debounceTimeout: 10}); // 38
 
 const port = 3000;
 
@@ -32,23 +32,23 @@ index.listen(port, () => {
 const stdDelay = (time: number) => {
   return new Promise(resolve => setTimeout(resolve, time));
 }
-
-relayBank.Init(0);           // Set mode to Async and turn off all relays
-//relayBank.switchMode(1);     // Switch to Sync mode
-
+ // Switch to Sync mode
 
 io.sockets.on('connection', (socket: Socket) => {
+
+  relayBank.Init(0);           // Set mode to Async and turn off all relays
+  relayBank.switchMode(1);
 
   nextCut.watch((err, value) => { // Watch for hardware interrupts on pushButton
     socket.emit('nextCutBtn', true);
     console.log('Hardware: received Next Cut socket command');
   });
-//
+
   setRef.watch((err, value) => { // Watch for hardware interrupts on pushButton
     socket.emit('setRefBtn', true);
     console.log('Hardware: received Set Ref socket command')
   });
-
+//
   toggleMode.watch((err, value) => { // Watch for hardware interrupts on pushButton
     socket.emit('toggleBtn', true);
     console.log('Hardware: received Toggle Mode command')
@@ -63,11 +63,15 @@ io.sockets.on('connection', (socket: Socket) => {
   socket.on('nextCutBtn', (data: boolean) => {
     if (data) {
       console.log('Sawmill: preforming Next Cut sequence...')
-      relayBank.relayWrite(1, 1);  // Turn on relay 2
-      stdDelay(1000).then(() => {
-        relayBank.relayWrite(1, 0);  // Turn on relay 2
-        console.log('Sawmill: ...completed Next Cut sequence')
-        socket.emit('nextCutBtn', false);
+      relayBank.relayWrite(0, 1);
+      stdDelay(800).then(() => {
+        relayBank.relayWrite(0, 0);
+        relayBank.relayWrite(1, 1);
+        stdDelay(1500).then(() => {
+          relayBank.relayWrite(1, 0);
+          console.log('Sawmill: ...completed Next Cut sequence')
+          socket.emit('nextCutBtn', false);
+        });
       })
     }
   });
@@ -75,7 +79,9 @@ io.sockets.on('connection', (socket: Socket) => {
   socket.on('setRefBtn', (data: boolean) => {
     if (data) {
       console.log('Sawmill: preforming Set Ref sequence...')
+      relayBank.relayWrite(2, 1);
       stdDelay(1500).then(() => {
+        relayBank.relayWrite(2, 0);
         console.log('Sawmill: ...completed Set Ref cut sequence')
         socket.emit('setRefBtn', false);
       })
@@ -85,7 +91,8 @@ io.sockets.on('connection', (socket: Socket) => {
   socket.on('toggleBtn', (data: boolean) => {
     if (data) {
       console.log('Sawmill: preforming Toggle Mode sequence...')
-      stdDelay(1000).then(() => {
+      stdDelay(400).then(() => {
+        relayBank.relayWrite(1, 0);  // Turn on relay 2
         console.log('Sawmill: ...completed Toggle Mode sequence')
         socket.emit('toggleBtn', false);
       })
@@ -95,7 +102,9 @@ io.sockets.on('connection', (socket: Socket) => {
   socket.on('raiseBtn', (data: boolean) => {
     if (data) {
       console.log('Sawmill: preforming Raise sequence...')
-      stdDelay(1000).then(() => {
+      relayBank.relayWrite(3, 1);
+      stdDelay(2000).then(() => {
+        relayBank.relayWrite(3, 0);  // Turn on relay 2
         console.log('Sawmill: ...completed Raise sequence')
         socket.emit('raiseBtn', false);
       })
