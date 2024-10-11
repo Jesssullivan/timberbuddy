@@ -4,7 +4,7 @@ After=systemd-udevd.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/node server/index.js
+ExecStart=/usr/bin/npx tsx server/pi_socket_server.ts
 WorkingDirectory=/home/{{uname}}/timberbuddy/
 Restart=on-failure
 RestartSec=10
