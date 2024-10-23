@@ -10,13 +10,23 @@
   stat:
     path: /usr/share/keyrings/nodesource.gpg
   register: stat_result_nodesource
-- name: ensure node gpg key is in place
+- name: try initial node key set
   shell: |
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/nodesource.gpg
+  become: true
+  ignore_errors: true
+  when: not stat_result_nodesource.stat.exists
+- name: try overwrite node key set
+  shell: |
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/nodesource.gpg --batch --yes
+  become: true
+  ignore_errors: true
+- name: ensure node gpg key is in place
+  shell: |
     echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
     curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
   become: true
-  when: not stat_result_nodesource.stat.exists
+  ignore_errors: true
 - name: Update all packages to their latest version
   apt:
     name: "*"
@@ -25,6 +35,7 @@
 - name: install nodejs
   apt:
     pkg:
+      - "nodejs"
       - "build-essential"
   become: true
 - name: Check if pnpm exists
@@ -53,6 +64,15 @@
   shell: |
     gh repo clone Jesssullivan/timberbuddy
   when: not stat_result_tb_git.stat.exists
+- name: ensure node-gyps are installed globally
+  shell: |
+    /home/{{uname}}/.local/share/pnpm/pnpm setup
+    /home/{{uname}}/.local/share/pnpm/pnpm i -g add pnpm
+    /home/{{uname}}/.local/share/pnpm/pnpm install -g node-gyp
+    /home/{{uname}}/.local/share/pnpm/pnpm install -g node-pre-gyp
+  args:
+    chdir: /home/{{uname}}/timberbuddy/
+  ignore_errors: true
 - name: ensure node depends are installed
   command: /home/{{uname}}/.local/share/pnpm/pnpm install
   args:
