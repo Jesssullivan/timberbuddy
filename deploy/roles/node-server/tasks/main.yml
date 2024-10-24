@@ -66,6 +66,8 @@
   when: not stat_result_tb_git.stat.exists
 - name: ensure node-gyps are installed globally
   shell: |
+    export PNPM_HOME="/home/{{uname}}/.local/share/pnpm"
+    export PATH="$PNPM_HOME:$PATH"
     /home/{{uname}}/.local/share/pnpm/pnpm setup
     /home/{{uname}}/.local/share/pnpm/pnpm i -g add pnpm
     /home/{{uname}}/.local/share/pnpm/pnpm install -g node-gyp
