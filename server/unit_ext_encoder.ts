@@ -12,7 +12,7 @@ const UNIT_EXT_ENCODER_ZERO_MODE_REG = 0x70;
 const FIRMWARE_VERSION_REG = 0xFE;
 const I2C_ADDRESS_REG = 0xFF;
 
-class UNIT_EXT_ENCODER {
+export default class UNIT_EXT_ENCODER {
     private _addr: number;
     private _i2c: I2C;
 
@@ -59,9 +59,10 @@ class UNIT_EXT_ENCODER {
         this.writeBytes(UNIT_EXT_ENCODER_ZERO_PULSE_VALUE_REG, buffer);
     }
 
-    getMeterValue(): number {
+    getMeterValue(): string {
         const data = this.readBytes(UNIT_EXT_ENCODER_METER_REG, 4);
-        return data.readUInt32LE(0);
+        const value = data.readInt32LE(0);
+        return value.toString();
     }
 
     getMeterString(): string {
@@ -117,30 +118,31 @@ class UNIT_EXT_ENCODER {
 }
 
 
-
-// Usage Example
-const encoder = new UNIT_EXT_ENCODER();
-if (encoder.begin()) {
-    console.log("Encoder initialized successfully");
-
-    encoder.resetEncoder();
-    encoder.setZeroPulseValue(600);
-
-    let running = true;
-
-    process.on('SIGTERM', () => {
-        running = false;
-    });
-
-    const _enc_test = async () => {
-        while (running) {
-            console.log("Meter Value:", encoder.getMeterValue());
-            console.log("Zero Pulse Value:", encoder.getZeroPulseValue());
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-    };
-
-    _enc_test();
-} else {
-    console.error("Failed to initialize encoder");
-}
+//
+//// Usage Example
+//const encoder = new UNIT_EXT_ENCODER();
+//if (encoder.begin()) {
+//    console.log("Encoder initialized successfully");
+//
+//    encoder.resetEncoder();
+//    encoder.setZeroMode(0);
+//    encoder.setZeroPulseValue(600);
+//    encoder.setPerimeter(1200)
+//
+//    let running = true;
+//
+//    process.on('SIGTERM', () => {
+//        running = false;
+//    });
+//
+//    const _enc_test = async () => {
+//        while (running) {
+//            console.log("Meter value:", encoder.getMeterValue());
+//            await new Promise(resolve => setTimeout(resolve, 1000));
+//        }
+//    };
+//
+//    _enc_test();
+//} else {
+//    console.error("Failed to initialize encoder");
+//}
