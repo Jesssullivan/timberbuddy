@@ -119,30 +119,30 @@ export default class UNIT_EXT_ENCODER {
 
 
 //
-//// Usage Example
-//const encoder = new UNIT_EXT_ENCODER();
-//if (encoder.begin()) {
-//    console.log("Encoder initialized successfully");
-//
-//    encoder.resetEncoder();
-//    encoder.setZeroMode(0);
-//    encoder.setZeroPulseValue(600);
-//    encoder.setPerimeter(1200)
-//
-//    let running = true;
-//
-//    process.on('SIGTERM', () => {
-//        running = false;
-//    });
-//
-//    const _enc_test = async () => {
-//        while (running) {
-//            console.log("Meter value:", encoder.getMeterValue());
-//            await new Promise(resolve => setTimeout(resolve, 1000));
-//        }
-//    };
-//
-//    _enc_test();
-//} else {
-//    console.error("Failed to initialize encoder");
-//}
+// Usage Example
+const encoder = new UNIT_EXT_ENCODER();
+if (encoder.begin()) {
+   console.log("Encoder initialized successfully");
+
+   encoder.resetEncoder();
+   encoder.setZeroMode(0);
+   encoder.setZeroPulseValue(5000);
+   encoder.setPerimeter(10000)
+
+   let running = true;
+
+   process.on('SIGTERM', () => {
+       running = false;
+   });
+
+   const _enc_test = async () => {
+       while (running) {
+           console.log("Meter value:", encoder.getMeterValue());
+           await new Promise(resolve => setTimeout(resolve, 1000));
+       }
+   };
+
+   _enc_test();
+} else {
+   console.error("Failed to initialize encoder");
+}
