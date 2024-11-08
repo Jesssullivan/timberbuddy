@@ -3,10 +3,13 @@ import { createServer, Server as HttpServer } from 'http';
 import {Server as SocketIOServer, Socket} from 'socket.io';
 import { handler } from '../build/handler.js';
 import UNIT_4RELAY from './unit_4relay'
+import UNIT_EXT_ENCODER from './unit_ext_encoder'
 import {Gpio} from 'onoff';
 
 const relayBank = new UNIT_4RELAY();
+const extEnc = new UNIT_EXT_ENCODER();
 
+// pi button i/o:
 const nextCut = new Gpio(590,'in', 'both', 'rising', {debounceTimeout: 10});
 const setRef = new Gpio(587, 'in', 'both', 'rising', {debounceTimeout: 10}); // 36
 const toggleMode = new Gpio(591,'in', 'both', 'rising', {debounceTimeout: 10}); // 37
@@ -32,10 +35,11 @@ index.listen(port, () => {
 const stdDelay = (time: number) => {
   return new Promise(resolve => setTimeout(resolve, time));
 }
- // Switch to Sync mode
 
+// init sockets & sync mode
 io.sockets.on('connection', (socket: Socket) => {
 
+  // init relay module
   try {
       relayBank.Init(0);
   } catch (error) {
@@ -52,6 +56,19 @@ io.sockets.on('connection', (socket: Socket) => {
       console.log("Continuing...");
   }
 
+  // init encoder module
+  if (extEnc.begin()) {
+
+    console.log("Encoder initialized successfully");
+
+    // set initial encoder parameters
+    extEnc.resetEncoder();
+    extEnc.setZeroMode(0);
+    extEnc.setZeroPulseValue(600);
+    extEnc.setPerimeter(1200)
+  };
+
+  // Main server logic:
   nextCut.watch((err, value) => { // Watch for hardware interrupts on pushButton
     socket.emit('nextCutBtn', true);
     console.log('Hardware: received Next Cut socket command');
@@ -76,18 +93,37 @@ io.sockets.on('connection', (socket: Socket) => {
   socket.on('nextCutBtn', (data: boolean) => {
     if (data) {
       try {
-        console.log('Sawmill: preforming Next Cut sequence...')
+
+          let running = true;
+
+          process.on('SIGTERM', () => {
+              running = false;
+          });
+
+          const _enc_test = async () => {
+              while (running) {
+                  console.log("Meter value:", extEnc.getMeterValue());
+                  await new Promise(resolve => setTimeout(resolve, 1000));
+              }
+          };
+
+          console.log('Sawmill: preforming Next Cut sequence...')
+
+          // get current meter value
+          let current_meter_value = extEnc.getMeterValue();
           relayBank.relayWrite(0, 1);
-          stdDelay(800).then(() => {
-            relayBank.relayWrite(0, 0);
-            relayBank.relayWrite(1, 1);
-            stdDelay(1500).then(() => {
-              relayBank.relayWrite(1, 0);
-              console.log('Sawmill: ...completed Next Cut sequence')
-              socket.emit('nextCutBtn', false);
-            });
-          })
-        } catch (error) {
+
+          // while current_meter_value <=current_meter_value + 600
+          while (extEnc.getMeterValue() < extEnc.getMeterValue() + 600) {
+            _enc_test();
+          }
+
+          relayBank.relayWrite(0, 0);
+          relayBank.relayWrite(1, 1);
+
+          console.log('Sawmill: ...completed Next Cut sequence')
+          socket.emit('nextCutBtn', false);
+      } catch (error) {
           console.error("An error with nextCutBtn i2c block", error);
       } finally {
           console.log("Continuing...");
@@ -127,8 +163,6 @@ io.sockets.on('connection', (socket: Socket) => {
       } finally {
           console.log("Continuing...");
       }
-
-
     }
   });
 
