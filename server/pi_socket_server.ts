@@ -66,123 +66,123 @@ io.sockets.on('connection', (socket: Socket) => {
     extEnc.setZeroMode(0);
     extEnc.setZeroPulseValue(600);
     extEnc.setPerimeter(1200)
-  };
 
-  // Main server logic:
-  nextCut.watch((err, value) => { // Watch for hardware interrupts on pushButton
-    socket.emit('nextCutBtn', true);
-    console.log('Hardware: received Next Cut socket command');
-  });
+    // Main server logic:
+    nextCut.watch((err, value) => { // Watch for hardware interrupts on pushButton
+      socket.emit('nextCutBtn', true);
+      console.log('Hardware: received Next Cut socket command');
+    });
 
-  setRef.watch((err, value) => { // Watch for hardware interrupts on pushButton
-    socket.emit('setRefBtn', true);
-    console.log('Hardware: received Set Ref socket command')
-  });
-//
-  toggleMode.watch((err, value) => { // Watch for hardware interrupts on pushButton
-    socket.emit('toggleBtn', true);
-    console.log('Hardware: received Toggle Mode command')
-  });
+    setRef.watch((err, value) => { // Watch for hardware interrupts on pushButton
+      socket.emit('setRefBtn', true);
+      console.log('Hardware: received Set Ref socket command')
+    });
+  //
+    toggleMode.watch((err, value) => { // Watch for hardware interrupts on pushButton
+      socket.emit('toggleBtn', true);
+      console.log('Hardware: received Toggle Mode command')
+    });
 
-  raiseSaw.watch((err, value) => { // Watch for hardware interrupts on pushButton
-    socket.emit('raiseBtn', true);
-    console.log('Hardware: received Raise command')
-  });
+    raiseSaw.watch((err, value) => { // Watch for hardware interrupts on pushButton
+      socket.emit('raiseBtn', true);
+      console.log('Hardware: received Raise command')
+    });
 
-  // client socket handlers
-  socket.on('nextCutBtn', (data: boolean) => {
-    if (data) {
-      try {
+    // client socket handlers
+    socket.on('nextCutBtn', (data: boolean) => {
+      if (data) {
+        try {
 
-          let running = true;
+            let running = true;
 
-          process.on('SIGTERM', () => {
-              running = false;
-          });
+            process.on('SIGTERM', () => {
+                running = false;
+            });
 
-          const _enc_test = async () => {
-              while (running) {
-                  console.log("Meter value:", extEnc.getMeterValue());
-                  await new Promise(resolve => setTimeout(resolve, 1000));
-              }
-          };
+            const _enc_test = async () => {
+                while (running) {
+                    console.log("Meter value:", extEnc.getMeterValue());
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            };
 
-          console.log('Sawmill: preforming Next Cut sequence...')
+            console.log('Sawmill: preforming Next Cut sequence...')
 
-          // get current meter value
-          let current_meter_value = extEnc.getMeterValue();
-          relayBank.relayWrite(0, 1);
+            // get current meter value
+            const current_meter_value = Number(extEnc.getMeterValue());
+            relayBank.relayWrite(0, 1);
 
-          // while current_meter_value <=current_meter_value + 600
-          while (extEnc.getMeterValue() < extEnc.getMeterValue() + 600) {
-            _enc_test();
-          }
+            // while current_meter_value <=current_meter_value + 600
+            while (Number(extEnc.getMeterValue()) < current_meter_value + 600) {
+              _enc_test();
+            }
 
-          relayBank.relayWrite(0, 0);
-          relayBank.relayWrite(1, 1);
+            relayBank.relayWrite(0, 0);
+            relayBank.relayWrite(1, 1);
 
-          console.log('Sawmill: ...completed Next Cut sequence')
-          socket.emit('nextCutBtn', false);
-      } catch (error) {
-          console.error("An error with nextCutBtn i2c block", error);
-      } finally {
-          console.log("Continuing...");
+            console.log('Sawmill: ...completed Next Cut sequence')
+            socket.emit('nextCutBtn', false);
+        } catch (error) {
+            console.error("An error with nextCutBtn i2c block", error);
+        } finally {
+            console.log("Continuing...");
+        }
       }
-    }
-  });
+    });
 
-  socket.on('setRefBtn', (data: boolean) => {
-    if (data) {
-      try {
-        console.log('Sawmill: preforming Set Ref sequence...')
-        relayBank.relayWrite(2, 1);
-        stdDelay(1500).then(() => {
-          relayBank.relayWrite(2, 0);
-          console.log('Sawmill: ...completed Set Ref cut sequence')
-          socket.emit('setRefBtn', false);
-        })
-      } catch (error) {
-          console.error("An error with setRefBtn i2c block", error);
-      } finally {
-          console.log("Continuing...");
+    socket.on('setRefBtn', (data: boolean) => {
+      if (data) {
+        try {
+          console.log('Sawmill: preforming Set Ref sequence...')
+          relayBank.relayWrite(2, 1);
+          stdDelay(1500).then(() => {
+            relayBank.relayWrite(2, 0);
+            console.log('Sawmill: ...completed Set Ref cut sequence')
+            socket.emit('setRefBtn', false);
+          })
+        } catch (error) {
+            console.error("An error with setRefBtn i2c block", error);
+        } finally {
+            console.log("Continuing...");
+        }
       }
-    }
-  });
+    });
 
-  socket.on('toggleBtn', (data: boolean) => {
-    if (data) {
-      try {
-        console.log('Sawmill: preforming Toggle Mode sequence...')
-        stdDelay(400).then(() => {
-          relayBank.relayWrite(1, 0);  // Turn on relay 2
-          console.log('Sawmill: ...completed Toggle Mode sequence')
-          socket.emit('toggleBtn', false);
-        })
-      } catch (error) {
-          console.error("An error with toggleBtn i2c block", error);
-      } finally {
-          console.log("Continuing...");
+    socket.on('toggleBtn', (data: boolean) => {
+      if (data) {
+        try {
+          console.log('Sawmill: preforming Toggle Mode sequence...')
+          stdDelay(400).then(() => {
+            relayBank.relayWrite(1, 0);  // Turn on relay 2
+            console.log('Sawmill: ...completed Toggle Mode sequence')
+            socket.emit('toggleBtn', false);
+          })
+        } catch (error) {
+            console.error("An error with toggleBtn i2c block", error);
+        } finally {
+            console.log("Continuing...");
+        }
       }
-    }
-  });
+    });
 
-  socket.on('raiseBtn', (data: boolean) => {
-    if (data) {
-      try {
-        console.log('Sawmill: preforming Raise sequence...')
-        relayBank.relayWrite(3, 1);
-        stdDelay(2000).then(() => {
-          relayBank.relayWrite(3, 0);  // Turn on relay 2
-          console.log('Sawmill: ...completed Raise sequence')
-          socket.emit('raiseBtn', false);
-        })
-      } catch (error) {
-          console.error("An error with raiseBtn i2c block", error);
-      } finally {
-          console.log("Continuing...");
+    socket.on('raiseBtn', (data: boolean) => {
+      if (data) {
+        try {
+          console.log('Sawmill: preforming Raise sequence...')
+          relayBank.relayWrite(3, 1);
+          stdDelay(2000).then(() => {
+            relayBank.relayWrite(3, 0);  // Turn on relay 2
+            console.log('Sawmill: ...completed Raise sequence')
+            socket.emit('raiseBtn', false);
+          })
+        } catch (error) {
+            console.error("An error with raiseBtn i2c block", error);
+        } finally {
+            console.log("Continuing...");
+        }
       }
-    }
-  });
+    });
+  }
 });
 
 process.on('SIGINT', () => { // On ctrl+c
