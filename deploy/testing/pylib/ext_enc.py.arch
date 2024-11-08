@@ -1,5 +1,7 @@
 import smbus
 import time
+import signal
+import sys
 
 # Constants from the original C++ header file
 UNIT_EXT_ENCODER_ADDR = 0x59
@@ -18,6 +20,7 @@ class UNIT_EXT_ENCODER:
     def __init__(self, bus_number=1, addr=UNIT_EXT_ENCODER_ADDR):
         self._bus = smbus.SMBus(bus_number)
         self._addr = addr
+
 
     def writeBytes(self, addr, reg, buffer):
         self._bus.write_i2c_block_data(addr, reg, buffer)
@@ -96,9 +99,43 @@ class UNIT_EXT_ENCODER:
 # Usage Example:
 encoder = UNIT_EXT_ENCODER()
 if encoder.begin():
+
+    encoder.resetEncoder()
+    encoder.setZeroPulseValue(600)
+
     print("Encoder initialized successfully")
-    print("Encoder Value:", encoder.getEncoderValue())
-    encoder.setZeroPulseValue(1000)
-    print("Zero Pulse Value:", encoder.getZeroPulseValue())
+
+
+    # Flag to control the loop
+    running = True
+
+    def signal_handler(signum, frame):
+        global running
+        running = False
+
+    # Register signal handler for SIGTERM
+    signal.signal(signal.SIGTERM, signal_handler)
+
+    def check_key_press():
+        global running
+
+    def _enc_test():
+        global running
+        while running:
+            print("Meter Value:", encoder.getMeterValue())
+            print("Encoder Value:", encoder.getEncoderValue())
+            print("Zero Pulse Value:", encoder.getZeroPulseValue())
+            time.sleep(1)
+            check_key_press()
+
+    try:
+        _enc_test()
+    except KeyboardInterrupt:
+        print("Program interrupted by user.")
+        sys.exit(0)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        sys.exit(1)
+
 else:
     print("Failed to initialize encoder")
