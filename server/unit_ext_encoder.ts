@@ -117,17 +117,15 @@ export default class UNIT_EXT_ENCODER {
     }
 }
 
-
-//
-//// Usage Example
-//const encoder = new UNIT_EXT_ENCODER();
-//if (encoder.begin()) {
+// Usage Example
+// const encoder = new UNIT_EXT_ENCODER();
+// if (encoder.begin()) {
 //    console.log("Encoder initialized successfully");
 //
 //    encoder.resetEncoder();
 //    encoder.setZeroMode(0);
-//    encoder.setZeroPulseValue(600);
-//    encoder.setPerimeter(1200)
+//    encoder.setZeroPulseValue(5000);
+//    encoder.setPerimeter(10000)
 //
 //    let running = true;
 //
@@ -143,6 +141,6 @@ export default class UNIT_EXT_ENCODER {
 //    };
 //
 //    _enc_test();
-//} else {
+// } else {
 //    console.error("Failed to initialize encoder");
-//}
+// }
