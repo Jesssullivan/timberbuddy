@@ -10,9 +10,17 @@ const relayBank = new UNIT_4RELAY();
 const extEnc = new UNIT_EXT_ENCODER();
 
 // pi button i/o:
+
+// @ts-expect-error this works fine
 const nextCut = new Gpio(590,'in', 'both', 'rising', {debounceTimeout: 10});
+
+// @ts-expect-error this works fine
 const setRef = new Gpio(587, 'in', 'both', 'rising', {debounceTimeout: 10}); // 36
+
+// @ts-expect-error this works fine
 const toggleMode = new Gpio(591,'in', 'both', 'rising', {debounceTimeout: 10}); // 37
+
+// @ts-expect-error this works fine
 const raiseSaw = new Gpio(597, 'in', 'both', 'rising', {debounceTimeout: 10}); // 38
 
 const port = 3000;
@@ -67,23 +75,23 @@ io.sockets.on('connection', (socket: Socket) => {
     extEnc.setZeroPulseValue(600);
     extEnc.setPerimeter(1200)
 
-    // Main server logic:
-    nextCut.watch((err, value) => { // Watch for hardware interrupts on pushButton
+    // setup watchers:
+    nextCut.watch(() => { // Watch for hardware interrupts on pushButton
       socket.emit('nextCutBtn', true);
       console.log('Hardware: received Next Cut socket command');
     });
 
-    setRef.watch((err, value) => { // Watch for hardware interrupts on pushButton
+    setRef.watch(() => { // Watch for hardware interrupts on pushButton
       socket.emit('setRefBtn', true);
       console.log('Hardware: received Set Ref socket command')
     });
-  //
-    toggleMode.watch((err, value) => { // Watch for hardware interrupts on pushButton
+
+    toggleMode.watch(() => { // Watch for hardware interrupts on pushButton
       socket.emit('toggleBtn', true);
       console.log('Hardware: received Toggle Mode command')
     });
 
-    raiseSaw.watch((err, value) => { // Watch for hardware interrupts on pushButton
+    raiseSaw.watch(() => { // Watch for hardware interrupts on pushButton
       socket.emit('raiseBtn', true);
       console.log('Hardware: received Raise command')
     });
@@ -91,42 +99,7 @@ io.sockets.on('connection', (socket: Socket) => {
     // client socket handlers
     socket.on('nextCutBtn', (data: boolean) => {
       if (data) {
-        try {
-
-            let running = true;
-
-            process.on('SIGTERM', () => {
-                running = false;
-            });
-
-            const _enc_test = async () => {
-                while (running) {
-                    console.log("Meter value:", extEnc.getMeterValue());
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
-            };
-
-            console.log('Sawmill: preforming Next Cut sequence...')
-
-            // get current meter value
-            const current_meter_value = Number(extEnc.getMeterValue());
-            relayBank.relayWrite(0, 1);
-
-            // while current_meter_value <=current_meter_value + 600
-            while (Number(extEnc.getMeterValue()) < current_meter_value + 600) {
-              _enc_test();
-            }
-
-            relayBank.relayWrite(0, 0);
-            relayBank.relayWrite(1, 1);
-
-            console.log('Sawmill: ...completed Next Cut sequence')
-            socket.emit('nextCutBtn', false);
-        } catch (error) {
-            console.error("An error with nextCutBtn i2c block", error);
-        } finally {
-            console.log("Continuing...");
-        }
+        //
       }
     });
 
