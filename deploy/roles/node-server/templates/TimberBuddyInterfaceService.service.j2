@@ -1,13 +1,13 @@
 [Unit]
 Description=Timber Buddy Control Interface
-After=ssh.target
+After=systemd-udevd.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/node /home/jsullivan2/timberbuddy/server/index.js
-WorkingDirectory=/home/jsullivan2/timberbuddy/
+ExecStart=/usr/bin/npx tsx server/pi_socket_server.ts
+WorkingDirectory=/home/{{uname}}/timberbuddy/
 Restart=on-failure
-RestartSec=5
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target

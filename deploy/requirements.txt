@@ -1,8 +1,5 @@
 ansible
-ansible-lint
 setuptools
-pytest
-pytest-only
-requests
-PyYAML
-schedule
+cython
+smbus
+keyboard

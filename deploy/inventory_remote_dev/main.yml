@@ -1,0 +1,11 @@
+---
+all:
+  # TB Embedded vars:
+  vars:
+    address: https://google.com/
+    ansible_python_interpreter: auto_silent
+    pi_rc_local_path: /etc/rc/local
+    uname: TimberBuddy
+    branch: dev
+  hosts:
+    remote-dev

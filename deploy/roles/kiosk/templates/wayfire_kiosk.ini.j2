@@ -27,32 +27,8 @@ xkb_model = pc105
 xkb_layout = gb
 xkb_variant =
 
-[input-device:10-0038 generic ft5x06 (79)]
-output = DSI-1
-
-[input-device:6-0038 generic ft5x06 (79)]
-output = DSI-1
-
-[input-device:4-0038 generic ft5x06 (79)]
-output = DSI-2
-
-[input-device:10-0038 generic ft5x06 (00)]
-output = DSI-1
-
-[input-device:6-0038 generic ft5x06 (00)]
-output = DSI-1
-
-[input-device:4-0038 generic ft5x06 (00)]
-output = DSI-2
-
-[input-device:10-005d Goodix Capacitive TouchScreen]
-output = DSI-1
-
 [input-device:6-005d Goodix Capacitive TouchScreen]
 output = DSI-1
-
-[input-device:4-005d Goodix Capacitive TouchScreen]
-output = DSI-2
 
 [autostart]
 # Automatically start background and panel.
@@ -61,4 +37,4 @@ output = DSI-2
 autostart_wf_shell = false
 screensaver = false
 dpms = false
-kiosk = /home/jsullivan2/kiosk.sh
+kiosk = /home/{{uname}}/kiosk.sh
