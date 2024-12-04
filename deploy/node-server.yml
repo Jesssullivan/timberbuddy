@@ -1,5 +1,9 @@
 ---
 - hosts: all
+  vars_prompt:
+    - name: github_pat
+      prompt: "Provide the TB deploy github_pat token"
+      private: yes
   roles:
     - role: node-server
 
