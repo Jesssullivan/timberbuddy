@@ -1,4 +1,4 @@
-# Routines diplay todos:
+# Routines display todos:
 
 Once the reference point is set we want to display the folloing info to the operator:
 
