@@ -88,7 +88,6 @@ io.sockets.on('connection', (socket: Socket) => {
         let _dist = _source === 'stack' ? _store["stack_height"] : _store["core_height"];
 
         console.log('Sawmill: preforming Next Cut sequence, moving down ' + _dist)
-        Num(_dist)
         relayBank.relayWrite(0, 1);
 
         stdDelay(800).then(() => {
