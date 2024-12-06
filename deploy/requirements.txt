@@ -1,3 +1,5 @@
 ansible
 setuptools
 cython
+smbus
+keyboard
