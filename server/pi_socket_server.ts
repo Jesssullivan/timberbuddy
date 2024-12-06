@@ -4,11 +4,12 @@ import {Server as SocketIOServer, Socket} from 'socket.io';
 import { handler } from '../build/handler.js';
 import UNIT_4RELAY from './unit_4relay'
 import {Gpio} from 'onoff';
+import {readFileSync} from 'fs';
 
 const relayBank = new UNIT_4RELAY();
 
-const nextCut = new Gpio(590,'in', 'both', 'rising', {debounceTimeout: 10});
-const setRef = new Gpio(587, 'in', 'both', 'rising', {debounceTimeout: 10}); // 36
+const nextCut = new Gpio(587,'in', 'both', 'rising', {debounceTimeout: 10});
+const setRef = new Gpio(590, 'in', 'both', 'rising', {debounceTimeout: 10}); // 36
 const toggleMode = new Gpio(591,'in', 'both', 'rising', {debounceTimeout: 10}); // 37
 const raiseSaw = new Gpio(597, 'in', 'both', 'rising', {debounceTimeout: 10}); // 38
 
@@ -18,6 +19,7 @@ const app = express();
 const index: HttpServer = createServer(app);
 
 const io = new SocketIOServer(index);
+
 
 io.on('connection', (socket) => {
   socket.emit('eventFromServer', 'Sockets are live! 👋');
@@ -32,7 +34,6 @@ index.listen(port, () => {
 const stdDelay = (time: number) => {
   return new Promise(resolve => setTimeout(resolve, time));
 }
- // Switch to Sync mode
 
 io.sockets.on('connection', (socket: Socket) => {
 
@@ -41,7 +42,7 @@ io.sockets.on('connection', (socket: Socket) => {
   } catch (error) {
       console.error("An error with relayBank.Init(0)", error);
   } finally {
-      console.log("Continuing...");
+      console.log("Relay bank init continuing...");
   }
 
   try {
@@ -49,7 +50,7 @@ io.sockets.on('connection', (socket: Socket) => {
   } catch (error) {
       console.error("An error with relayBank.switchMode(1)", error);
   } finally {
-      console.log("Continuing...");
+      console.log("Relay bank switch mode Continuing...");
   }
 
   nextCut.watch((err, value) => { // Watch for hardware interrupts on pushButton
@@ -74,31 +75,56 @@ io.sockets.on('connection', (socket: Socket) => {
 
   // client socket handlers
   socket.on('nextCutBtn', (data: boolean) => {
+
+    // force client socket refresh
+    socket.disconnect()
+
     if (data) {
       try {
-        console.log('Sawmill: preforming Next Cut sequence...')
-          relayBank.relayWrite(0, 1);
-          stdDelay(800).then(() => {
-            relayBank.relayWrite(0, 0);
-            relayBank.relayWrite(1, 1);
-            stdDelay(1500).then(() => {
-              relayBank.relayWrite(1, 0);
-              console.log('Sawmill: ...completed Next Cut sequence')
-              socket.emit('nextCutBtn', false);
-            });
-          })
+
+        let _ref = socket.handshake.headers.referer;
+        let _source = _ref.substring(_ref.lastIndexOf('/') + 1)
+        let _store = JSON.parse(readFileSync('store.json', 'utf-8'))
+        let _dist = _source === 'stack' ? _store["stack_height"] : _store["core_height"];
+
+        console.log('Sawmill: preforming Next Cut sequence, moving down ' + _dist)
+        Num(_dist)
+        relayBank.relayWrite(0, 1);
+
+        stdDelay(800).then(() => {
+          relayBank.relayWrite(0, 0);
+          relayBank.relayWrite(1, 1);
+          stdDelay(1500).then(() => {
+            relayBank.relayWrite(1, 0);
+            console.log('Sawmill: ...completed Next Cut sequence')
+            socket.emit('nextCutBtn', false);
+
+            // ensure unloading
+            let _ref = null
+            let _source = null
+            let _store = null
+            let _dist = null
+          });
+        })
+
         } catch (error) {
           console.error("An error with nextCutBtn i2c block", error);
       } finally {
-          console.log("Continuing...");
+          console.log("Next cut button continuing...");
       }
     }
   });
 
   socket.on('setRefBtn', (data: boolean) => {
+
+    // force client socket refresh
+    socket.disconnect()
+
     if (data) {
       try {
         console.log('Sawmill: preforming Set Ref sequence...')
+        console.log(data)
+
         relayBank.relayWrite(2, 1);
         stdDelay(1500).then(() => {
           relayBank.relayWrite(2, 0);
@@ -114,6 +140,10 @@ io.sockets.on('connection', (socket: Socket) => {
   });
 
   socket.on('toggleBtn', (data: boolean) => {
+
+    // force client socket refresh
+    socket.disconnect()
+
     if (data) {
       try {
         console.log('Sawmill: preforming Toggle Mode sequence...')
@@ -126,13 +156,18 @@ io.sockets.on('connection', (socket: Socket) => {
           console.error("An error with toggleBtn i2c block", error);
       } finally {
           console.log("Continuing...");
+
+          // force client socket refresh
+          socket.disconnect()
       }
-
-
     }
   });
 
   socket.on('raiseBtn', (data: boolean) => {
+
+    // force client socket refresh
+    socket.disconnect()
+
     if (data) {
       try {
         console.log('Sawmill: preforming Raise sequence...')

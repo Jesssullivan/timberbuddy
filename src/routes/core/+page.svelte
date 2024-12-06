@@ -3,14 +3,15 @@
 	import {browser} from "$app/environment";
 	import {writable} from "svelte/store";
 	import {onMount} from "svelte";
+
 	export let data;
 
-	const defaultStackValue = data.read_defaults.core_height;
+	const defaultCoreValue = data.read_defaults.core_height;
 
-	const core_cut_size = writable<string>(defaultStackValue.toString());
+	const core_cut_size = writable<string>(defaultCoreValue.toString());
 
 	onMount(async () => {
-		window.localStorage.setItem('core_size', defaultStackValue);
+		window.localStorage.setItem('core_size', defaultCoreValue);
 	});
 
 	const update_cut_size = async () => {
@@ -26,7 +27,6 @@
 		});
 
 		const res = await response.json();
-		console.log(res)
 	}
 
 	core_cut_size.subscribe((value) => {
