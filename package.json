@@ -16,7 +16,7 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "darwin-start": "npx tsx ./server/darwin_socket_server.ts",
-    "pi-start": "npx tsx ./server/darwin_socket_server.ts"
+    "pi-start": "npx tsx ./server/pi_socket_server.ts"
   },
   "devDependencies": {
     "@skeletonlabs/skeleton": "2.10.1",

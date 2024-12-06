@@ -64,13 +64,22 @@
 		odo_value.set(result.toString())
 	}
 
-	const toggle_mode = () => $page.url.pathname.includes('stack') ? goto('/core') : goto('/stack')
+	const toggle_mode = () => {
+		if ($page.url.pathname.includes('stack')) {
+			goto('/core')
+			//			window.history.replaceState(history.state, '', newURL)
+			socket.disconnect();
+		} else {
+			goto('/stack')
+			socket.disconnect();
+		}
+}
 
 	$: core_name = $page.url.pathname.split('/')[1] === '' ?  'Home'  :cml($page.url.pathname.split('/')[1] + ' mode')
 
 	const socket = io(); //load socket.io-client and connect to the host that serves the page
 
-	const socketBtnHandler = (el_id: string, socket_id=el_id) => {
+	const socketBtnHandler = (el_id: string, val=42, socket_id=el_id) => {
 
 		const handleBtnEl: HTMLButtonElement = document.getElementById(el_id) as HTMLButtonElement;
 
@@ -93,6 +102,11 @@
 		socketBtnHandler('nextCutBtn');
 		socketBtnHandler('setRefBtn');
 		socketBtnHandler('toggleBtn');
+
+		socket.on('disconnect', function() {
+            console.log('recived socket complete, restarting connection')
+		    socket.connect();
+		})
 	});
 
 </script>
@@ -148,26 +162,25 @@
 					class=" btn rounded-none variant-ghost-success !py-6 md:text-xl xl:!text-2xl !px-8"
 					id="nextCutBtn"
 				>
-					<span>
-						Next Cut </span>
+					<span>Next Cut </span>
 				</button>
 				<button
 					class=" btn rounded-none variant-ghost-secondary md:text-xl xl:!text-2xl !px-8"
 					id="setRefBtn"
 				>
-					Set Ref
+					Drag
 				</button>
 				<button on:click={toggle_mode}
-					class=" btn rounded-none variant-ghost-surface md:text-xl xl:!text-2xl"
+					class=" btn rounded-none variant-ghost-surface md:text-xl xl:!text-2xl !px-8"
 					id="toggleBtn"
 				>
-					Toggle Mode
+					Sides
 				</button>
 				<button
 					class=" btn rounded-none variant-ghost-warning md:text-xl xl:!text-2xl !px-8"
 					id="raiseBtn"
 				>
-					Raise
+					Set Ref
 				</button>
 				</div>
 			</svelte:fragment>

@@ -66,14 +66,5 @@ export default class UNIT_4RELAY {
         this.write1Byte(UNIT_4RELAY_ADDR, UNIT_4RELAY_RELAY_REG, StateFromDevice);
     }
 }
-//
-//const relay = new UNIT_4RELAY();
-//relay.begin();
-//relay.Init(0);           // Set mode to Async and turn off all relays
-//relay.switchMode(1);     // Switch to Sync mode
-//relay.relayAll(1);       // Turn all relays on
-//relay.relayAll(0);       // Turn all relays on
-//
-//relay.ledAll(1);         // Turn all LEDs on
-//relay.relayWrite(2, 1);  // Turn on relay 2
-//relay.ledWrite(1, 0);    // Turn off LED 1
+
+
