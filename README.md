@@ -20,8 +20,8 @@ Read on to understand the architecture of this project, why it is built this way
 
 **HID transmission to hardware:**
 - Touch screen button presses are communicated via **websocket** to the node server;
-  - All socket communications include a boolean value that is treated like an atomic state;
-  - This allows different / concurrent / incidental requests from the hardware to be made by one any number of connected clients (though of course, as a PLC there will only ever by one connected client), with messages only getting accepted if the requested routine is not already active.   This means we do not have to deal with message queues or setup what are fundamentally synchronous routines (move the saw up or down by however much, home the machine, toggle a mode etc) as faux asynchronous jobs.  This is the opposite if how most server / client communications would be setup, but is important to understand because the job executed by the server is literally a single set of sensors, lights, solenoids connected to the pi.
+  - socket communications pass along a boolean value that is treated like an atomic state;
+  - This allows different / concurrent / incidental requests from the hardware to be made by any number of connected clients (though of course, as a PLC there will only ever by one connected client), with messages only getting accepted if the requested routine is not already active.   This means we do not have to deal with message queues or masquerade what are fundamentally synchronous routines (move the saw up or down by however much, home the machine, toggle a mode etc) as faux asynchronous jobs.  This is the opposite if how most server / client communications would be setup, but is important to understand because the job executed by the server is literally a single set of sensors, lights, solenoids connected to the pi.
 - Physical button presses are also communicated via websocket on the active client connection.
 
 **Data transmission and storage:**
@@ -33,13 +33,6 @@ Read on to understand the architecture of this project, why it is built this way
 
 **Type of client (core / stack in the case of the timberbuddy):**
 - Because actions are communicated via active websocket connection, we identify the kind of client and thus kind of job (stack or core, which ingest different cut sizes for example) with the referrer's slug in the socket handshake header.
-
-**Touchscreen / UI:**
-- SvelteKit web application;
-  - Pages use the edge runtime
-- Runs directly in a browser in kiosk mode
-  - Utilizes the Skeleton UI component library
-  - Utilizes Lucide Iconography
 
 **Pi Node Server:**
 - The compiled sveltekit application (*client + server*) is served using a custom express node application.
@@ -74,6 +67,13 @@ Read on to understand the architecture of this project, why it is built this way
   - `splash-kernel`:
     - began work on custom kernel and splash animation (pending completion by local artist) for virtualized dev environment
 
+**Touchscreen / UI:**
+- SvelteKit web application;
+  - Pages use the edge runtime
+- Runs directly in a browser in kiosk mode
+  - Utilizes the Skeleton UI component library
+  - Utilizes Lucide Iconography
+  
 **Testing**
 - I've included both python and cython implementations of the i2c example c++ classes provided by m5 stack.
 - demo encoder logging and relay toggling implementations are included with the typescript class files.
