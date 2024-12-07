@@ -80,7 +80,7 @@ Read on to understand the architecture of this project, why it is built this way
 - Currently, demo routines in the node server file are using timers for demo the atomic socket behavior while the saw is moving; switching this to read from the encoder and wait to reach a desired encoder reading is trivial. Similarly, moving these actual machine to class files is inevitable, all the functionality is there and ready to go.
 
 ## Why this way?  Doesn't this seem way more complicated than it should be?
-- In order to satisfy the requirements of fully remote development, a network enabled device with well documented GPIO, i2c IO, touchscreen IO etc really calls for a raspberry pi or similarly full-blown 64 computer.
+- In order to satisfy the requirements of fully remote development, a network enabled device with well documented GPIO, i2c IO, touchscreen IO etc really calls for a raspberry pi or similarly full-blown SBC.
 - Being able to clone SD cards interoperability with long term support from the pi foundation was identified as a plus by collaborators.
 - The customer / collaborators indicated a desire for over the air updates or modifications.
 - The recent (at the time) beta release of pi connect and wayland screen sharing on pi made boot strapping the setup of a pi completely remotely without needing to coach anyone through major technical hurdles pretty easy.
