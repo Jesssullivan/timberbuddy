@@ -45,7 +45,7 @@ Read on to understand the architecture of this project, why it is built this way
   - The sveltkit application uses the `node-adapter` as part of the vite build process to make this possible.
   - The *Sveltekit application* is responsible for handling the POST API and **creating** and **writing** to the static json data file.  The Sveltekit application is responsible for all http communication.  
 - The *node server* is responsible for pi GPIO connections (buttons!) websocket connections, managing atomic hardware state and i2c bus and for **reading** the static json file during routine execution.
-- includes keyboard support and does its best to allow for graceful socket, GPIO and fs exit (allowing for the systemd service to properly manage keepalive)
+- includes keyboard support and does its best to allow for graceful socket, GPIO and fs exit (allowing for the systemd service to properly keep the  service alive)
 
 **About The Darwin Server:**
 - I also wrote a development node server for macos that uses keyboard presses as a stand-in for hardware GPIO buttons.  This does not allow for i2c bus communication, but does help troubleshoot socket / http development.  
@@ -54,7 +54,7 @@ Read on to understand the architecture of this project, why it is built this way
 - Yes.  Use the traditional vite dev server for UI development. 
 
 **The i2c bus:**
-- Encoder io and relay IO is done via the i2c bus.  I've written drivers for these two M5 esp32 i2c devices in Typescript depending solely on the `raspi-i2c` library. These are modeled after the example c++ classes shared by M5 stack.  Synchronous methods are used wherever possible.  
+- Encoder io and relay IO is done via the i2c bus.  I've written drivers for two M5 i2c devices in Typescript depending solely on the `raspi-i2c` library. These are modeled after the example C++ classes shared by M5 stack on github.  Synchronous methods are used wherever possible.  
 
 **Deployment:**
 - Leverages pi connect for initial remote connection and the initial tailscale / wiregaurd daemon setup for SSH.
