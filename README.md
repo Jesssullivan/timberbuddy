@@ -70,7 +70,7 @@ Read on to understand the architecture of this project, why it is built this way
     - sets up all kinds of node server related stuff
     - fetches source from git w/ token, sets up nodegyp, pnpm
     - Compiles sveltekit application and installs as the complete node application as a systemd service
-  - `spash-kernel`:
+  - `splash-kernel`:
     - began work on custom kernel and splash animation (pending completion by local artist) for virtualized dev environment
 
 **Testing**
@@ -105,7 +105,9 @@ Read on to understand the architecture of this project, why it is built this way
 - some stuff to toggle (in my dev unit, I used these [12v pilot lamps](https://www.amazon.com/dp/B0CYG8YGP3?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1) to simulate hydrolytic solenoids firing)
 - an encoder to read from
 
-- ***Expertise in typescript, sveltekit, postcss, websocket programming, tailwind, vite adapters, ansible deployment strategies, node server development, express applications, debugging with cython, i2c bus programming, atomic execution paradigms, linux init systems, wayland for HID implementations, NIC and SOC power management on SBCs and some shell scripting.***
+#### Most importantly:
+
+***Expertise in typescript, sveltekit, postcss, websocket programming, tailwind, vite adapters, ansible deployment strategies, node server development, express applications, debugging with cython, i2c bus programming, atomic execution paradigms, linux init systems, wayland for HID implementations, NIC and SOC power management on SBCs and shell scripting.  This project is not done.  This repo is provided as an as-is archive of work.***
 
 
 ## How to build it:
