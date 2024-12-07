@@ -4,6 +4,9 @@
 
 ***Wouldn't it be cool to use a familiar, modern web stack for commercial automation or robotics?***
 
+![](media/demo.gif)
+
+
 Read on to understand the architecture of this project, why it is built this way and how to build and bend this fun project into your cool product.
 
 
@@ -11,8 +14,8 @@ Read on to understand the architecture of this project, why it is built this way
 
 
 **User input:**
-- Operator interacts with the controller with any of:
-  - Touch screen UI
+- Operator interacts with the controller with any of the following inputs:
+  - the Touch screen UI
   - physical front panel buttons
   - Graphically via the web (pi connect, web console or with wireguard / port forwarding)
   - Via SSH
@@ -171,3 +174,5 @@ rpi-connect signin
 # upon reprovisioning, you may need to play keys time:
 ssh-copy-id <TimberBuddy>@<pi-ipv4> 
 ```
+
+![](media/TimberBuddy.png)
