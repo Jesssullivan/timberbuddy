@@ -105,7 +105,7 @@ Read on to understand the architecture of this project, why it is built this way
 - some stuff to toggle (in my dev unit, I used these [12v pilot lamps](https://www.amazon.com/dp/B0CYG8YGP3?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1) to simulate hydrolytic solenoids firing)
 - an encoder to read from
 
-- **Expertise in typescript, sveltekit, postcss, websocket programming, tailwind, vite adapters, modern ansible deployment strategies, node server development, express applications, debugging with cython, i2c bus programming, atomic execution paradigms, linux init systems, wayland for HID implementations, NIC and SOC power management on SBCs and some shell scripting.**   
+- ***Expertise in typescript, sveltekit, postcss, websocket programming, tailwind, vite adapters, ansible deployment strategies, node server development, express applications, debugging with cython, i2c bus programming, atomic execution paradigms, linux init systems, wayland for HID implementations, NIC and SOC power management on SBCs and some shell scripting.***
 
 
 ## How to build it:
@@ -151,7 +151,7 @@ curl -L https://pkgs.tailscale.com/stable/raspbian/$(lsb_release -cs).noarmor.gp
 sudo tailscale up -ssh # use your local machine to login into to control plane with the generated url
 ```
 
-#### On pi w/ tailscale installed and w/ `--ssh` enabled:
+#### from controller:
  
 ```shell
 # run like any ansible playbook; you'll be prompted for a github key for the remote clone / build / install
