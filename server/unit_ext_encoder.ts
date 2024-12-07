@@ -117,32 +117,32 @@ export default class UNIT_EXT_ENCODER {
     }
 }
 
- const encoder = new UNIT_EXT_ENCODER();
-
- if (encoder.begin()) {
-
-    // full rotation provides 50,000
-    console.log("Encoder initialized successfully");
-
-    encoder.resetEncoder();
-    encoder.setZeroMode(0);
-    encoder.setZeroPulseValue(5000);
-    encoder.setPerimeter(10000)
-
-    let running = true;
-
-    process.on('SIGTERM', () => {
-        running = false;
-    });
-
-    const _enc_test = async () => {
-        while (running) {
-            console.log("Meter value:", encoder.getMeterValue());
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-    };
-
-    _enc_test();
- } else {
-    console.error("Failed to initialize encoder");
- }
+ // const encoder = new UNIT_EXT_ENCODER();
+ //
+ // if (encoder.begin()) {
+ //
+ //    // full rotation provides 50,000
+ //    console.log("Encoder initialized successfully");
+ //
+ //    encoder.resetEncoder();
+ //    encoder.setZeroMode(0);
+ //    encoder.setZeroPulseValue(5000);
+ //    encoder.setPerimeter(10000)
+ //
+ //    let running = true;
+ //
+ //    process.on('SIGTERM', () => {
+ //        running = false;
+ //    });
+ //
+ //    const _enc_test = async () => {
+ //        while (running) {
+ //            console.log("Meter value:", encoder.getMeterValue());
+ //            await new Promise(resolve => setTimeout(resolve, 1000));
+ //        }
+ //    };
+ //
+ //    _enc_test();
+ // } else {
+ //    console.error("Failed to initialize encoder");
+ // }

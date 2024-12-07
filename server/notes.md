@@ -1,11 +1,11 @@
 # Routines display todos:
 
-Once the reference point is set we want to display the folloing info to the operator:
+Once the reference point is set we want to display the following info to the operator:
 
 Cuts remaining
 Display the current positions
 
-When set set ref is set, "green"
+When set ref is set, "green"
 when next cut os then hit, "red" until saw is where it should be
 
 Indicate when the saw is where it should be

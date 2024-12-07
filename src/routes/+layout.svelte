@@ -79,7 +79,7 @@
 
 	const socket = io(); //load socket.io-client and connect to the host that serves the page
 
-	const socketBtnHandler = (el_id: string, val=42, socket_id=el_id) => {
+	const socketBtnHandler = (el_id: string, socket_id=el_id) => {
 
 		const handleBtnEl: HTMLButtonElement = document.getElementById(el_id) as HTMLButtonElement;
 
