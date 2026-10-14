@@ -1,0 +1,13 @@
+--- a/packages/svelte-check/src/tsgo.ts
++++ b/packages/svelte-check/src/tsgo.ts
+@@ -16,7 +16,9 @@
+ export function tryParseTsGoVersion(tsconfigPath: string): PkgInfo | null {
+     const pkg =
+         tryParsePkg(tsconfigPath, '@typescript/native') ??
+-        tryParsePkg(tsconfigPath, '@typescript/native-preview');
++        tryParsePkg(tsconfigPath, '@typescript/native-preview') ??
++        // TypeScript 7 installed as `typescript` itself (no alias).
++        tryParsePkg(tsconfigPath, 'typescript');
+ 
+     if (
+         pkg &&

@@ -1,190 +1,163 @@
 <script lang="ts">
-	import io from 'socket.io-client';
-	import '../app.postcss';
-	import { LightSwitch } from '@skeletonlabs/skeleton';
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
-	import { page } from '$app/stores';
-	import {
-		goto,
-	} from '$app/navigation';
+	import '../app.css';
+	import { onMount, type Snippet } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
+	import { Moon, Sun } from '@lucide/svelte';
+	import { io, type Socket } from 'socket.io-client';
+	import { saveLocal } from '#lib/local.js';
+	import { getStore, recordCut } from '#lib/store.remote.js';
 
-	import { browser } from '$app/environment';
-	import { writable } from 'svelte/store';
-
-	// init store values
-	export let data;
+	let { children }: { children: Snippet } = $props();
 
 	// core store values
-	const defaultOdometerValue = data.read_defaults.odo_value;
+	const store = await getStore();
+	let odoValue = $state(store.odo_value);
 
-	onMount(async () => {
-		window.localStorage.setItem('odo_value', defaultOdometerValue);
+	$effect(() => {
+		saveLocal('odo_value', String(odoValue));
 	});
 
-	const odo_value = writable<string>(defaultOdometerValue);
+	const cml = (str: string) => str.replace(/^\w|[A-Z]|\b\w/g, (word) => word.toUpperCase()).replace(/\s+/g, ' ');
 
-	odo_value.subscribe((value) => {
-		if (browser) {
-			window.localStorage.setItem('odo_value', value);
+	const coreName = $derived.by(() => {
+		const slug = page.url.pathname.split('/')[1];
+		return slug === '' ? 'Home' : cml(slug + ' mode');
+	});
+
+	// Light / dark switch (Skeleton 5 has no LightSwitch component). src/app.html
+	// applies the saved mode before first paint.
+	let mode = $state<'light' | 'dark'>('dark');
+	const toggleColorMode = () => {
+		mode = mode === 'dark' ? 'light' : 'dark';
+		document.documentElement.setAttribute('data-mode', mode);
+		saveLocal('color-mode', mode);
+	};
+
+	let socket: Socket | undefined;
+
+	const addCut = async () => {
+		odoValue += 1;
+		try {
+			odoValue = await recordCut();
+		} catch (error) {
+			console.log('unable to record cut: ', error);
 		}
-	});
+	};
 
-	// Floating UI for Popups
-	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
-	import { storePopup } from '@skeletonlabs/skeleton';
-	import {onMount} from "svelte";
-	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
-
-
-	const cml = (str: string) => {
-		return str.replace(/^\w|[A-Z]|\b\w/g, function (word, index) {
-			return index == 0 ? word.toUpperCase() : word.toUpperCase();
-		}).replace(/\s+/g, ' ');
-	}
-
-	const update_odo = async () => {
-		const response = await fetch('/', {
-			method: 'POST',
-			body: JSON.stringify({
-				key: "odo_value",
-				new_cut_size: Number($odo_value) + 1
-			}),
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-
-		const res = await response.json();
-		console.log(res)
-	}
-
-	const add_cut = () => {
-		update_odo();
-		let result = Number($odo_value) + 1;
-		odo_value.set(result.toString())
-	}
-
-	const toggle_mode = () => {
-		if ($page.url.pathname.includes('stack')) {
-			goto('/core')
-			//			window.history.replaceState(history.state, '', newURL)
-			socket.disconnect();
+	const toggleMode = () => {
+		socket?.disconnect();
+		if (page.url.pathname.includes('stack')) {
+			void goto(resolve('/core'));
 		} else {
-			goto('/stack')
-			socket.disconnect();
+			void goto(resolve('/stack'));
 		}
-}
+	};
 
-	$: core_name = $page.url.pathname.split('/')[1] === '' ?  'Home'  :cml($page.url.pathname.split('/')[1] + ' mode')
-
-	const socket = io(); //load socket.io-client and connect to the host that serves the page
-
-	const socketBtnHandler = (el_id: string, socket_id=el_id) => {
-
-		const handleBtnEl: HTMLButtonElement = document.getElementById(el_id) as HTMLButtonElement;
-
-		if (handleBtnEl) {
-			// handle socket tx:
-			handleBtnEl.addEventListener("click", () => {
-				socket.emit(socket_id, true);
-			});
-			// handle socket rx:
-			socket.on(socket_id, (data) => {
-				if (data) {
-					handleBtnEl.click();
-				}
-			});
-		}
-	}
+	let raiseBtn = $state<HTMLButtonElement>();
+	let nextCutBtn = $state<HTMLButtonElement>();
+	let setRefBtn = $state<HTMLButtonElement>();
+	let toggleBtn = $state<HTMLButtonElement>();
 
 	onMount(() => {
-		socketBtnHandler('raiseBtn');
-		socketBtnHandler('nextCutBtn');
-		socketBtnHandler('setRefBtn');
-		socketBtnHandler('toggleBtn');
+		mode = document.documentElement.getAttribute('data-mode') === 'light' ? 'light' : 'dark';
 
-		socket.on('disconnect', function() {
-            console.log('recived socket complete, restarting connection')
-		    socket.connect();
-		})
+		// load socket.io-client and connect to the host that serves the page
+		const s = io();
+		socket = s;
+
+		// A panel button press goes to the node server as a socket event; a
+		// physical button press arrives as the same event and clicks the button.
+		const wire = (el: HTMLButtonElement | undefined, id: string) => {
+			if (!el) return;
+			el.addEventListener('click', () => {
+				s.emit(id, true);
+			});
+			s.on(id, (data: boolean) => {
+				if (data) el.click();
+			});
+		};
+		wire(raiseBtn, 'raiseBtn');
+		wire(nextCutBtn, 'nextCutBtn');
+		wire(setRefBtn, 'setRefBtn');
+		wire(toggleBtn, 'toggleBtn');
+
+		s.on('disconnect', () => {
+			console.log('recived socket complete, restarting connection');
+			s.connect();
+		});
+
+		return () => {
+			s.off();
+			s.disconnect();
+		};
 	});
 
+	const footerBtn = 'btn rounded-none px-2 md:px-8 md:text-xl xl:text-2xl!';
 </script>
 
-<!-- App Shell -->
-<AppShell>
-	<svelte:fragment slot="header">
-		<AppBar class="max-h-24">
-			<svelte:fragment slot="lead">
-				<a href="/" class="flex flex-col justify-center text-center">
-					<strong class="text-lg uppercase">Timber Buddy</strong>
-					<p class="text-sm  hover:animate-pulse">{core_name}</p>
-				</a>
-			</svelte:fragment>
-			<svelte:fragment slot="trail">
-				<button
-						class="btn btn-sm variant-ghost-surface"
-				>
-					 <span class="animate-pulse">{$odo_value}</span>
-					<span class="italic"> Cuts ⤤</span>
-				</button>
-				<button
-					class="btn btn-sm variant-ghost-surface"
-				>
-					Read Manual
-				</button>
-				<button
-					class="btn btn-sm variant-ghost-surface"
-				>
-					Toggle Network
-				</button>
-				<button
-					class="btn btn-sm variant-ghost-surface"
-				>
-					Support
-				</button>
-				<button
-					class="btn"
-				>
-					<LightSwitch height="h-8" width="w-16" />
-				</button>
-			</svelte:fragment>
-		</AppBar>
-	</svelte:fragment>
+<div class="grid h-full grid-rows-[auto_1fr_auto]">
+	<header class="bg-surface-100-900 flex max-h-24 flex-wrap items-center justify-between gap-2 p-2">
+		<a href={resolve('/')} class="flex flex-col justify-center text-center">
+			<strong class="text-lg uppercase">Timber Buddy</strong>
+			<p class="text-sm hover:animate-pulse" data-testid="core-name">{coreName}</p>
+		</a>
+		<div class="flex flex-wrap items-center gap-1">
+			<button class="btn btn-sm preset-tonal-surface border-surface-500 border">
+				<span class="animate-pulse" data-testid="odo">{odoValue}</span>
+				<span class="italic"> Cuts ⤤</span>
+			</button>
+			<button class="btn btn-sm preset-tonal-surface border-surface-500 hidden border md:inline-flex">
+				Read Manual
+			</button>
+			<button class="btn btn-sm preset-tonal-surface border-surface-500 hidden border md:inline-flex">
+				Toggle Network
+			</button>
+			<button class="btn btn-sm preset-tonal-surface border-surface-500 hidden border md:inline-flex"> Support </button>
+			<button
+				class="btn-icon preset-tonal-surface"
+				onclick={toggleColorMode}
+				aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+			>
+				{#if mode === 'dark'}<Sun size={20} />{:else}<Moon size={20} />{/if}
+			</button>
+		</div>
+	</header>
 
 	<!-- Page Route Content -->
-	<slot />
+	<main class="overflow-y-auto">
+		{@render children()}
+	</main>
 
-	<svelte:fragment slot="footer">
-
-				<div class="grid grid-cols-4 font-bold -mr-4 border-2">
-				<button on:click={add_cut}
-					class=" btn rounded-none variant-ghost-success !py-6 md:text-xl xl:!text-2xl !px-8"
-					id="nextCutBtn"
-				>
-					<span>Next Cut </span>
-				</button>
-				<button
-					class=" btn rounded-none variant-ghost-secondary md:text-xl xl:!text-2xl !px-8"
-					id="setRefBtn"
-				>
-					Drag
-				</button>
-				<button on:click={toggle_mode}
-					class=" btn rounded-none variant-ghost-surface md:text-xl xl:!text-2xl !px-8"
-					id="toggleBtn"
-				>
-					Sides
-				</button>
-				<button
-					class=" btn rounded-none variant-ghost-warning md:text-xl xl:!text-2xl !px-8"
-					id="raiseBtn"
-				>
-					Set Ref
-				</button>
-				</div>
-			</svelte:fragment>
-
-
-</AppShell>
-
+	<footer>
+		<div class="grid grid-cols-4 border-2 font-bold">
+			<button
+				bind:this={nextCutBtn}
+				onclick={addCut}
+				class="{footerBtn} preset-tonal-success border-success-500 border py-6!"
+				id="nextCutBtn"
+			>
+				<span>Next Cut</span>
+			</button>
+			<button
+				bind:this={setRefBtn}
+				class="{footerBtn} preset-tonal-secondary border-secondary-500 border"
+				id="setRefBtn"
+			>
+				Drag
+			</button>
+			<button
+				bind:this={toggleBtn}
+				onclick={toggleMode}
+				class="{footerBtn} preset-tonal-surface border-surface-500 border"
+				id="toggleBtn"
+			>
+				Sides
+			</button>
+			<button bind:this={raiseBtn} class="{footerBtn} preset-tonal-warning border-warning-500 border" id="raiseBtn">
+				Set Ref
+			</button>
+		</div>
+	</footer>
+</div>

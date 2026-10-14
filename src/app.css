@@ -1,0 +1,61 @@
+@import 'tailwindcss';
+
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-svelte';
+@import './timber-buddy-theme.css';
+
+/* Skeleton's component markup ships utility classes of its own; Tailwind 4
+   only generates what it can see at build time. */
+@source '../node_modules/@skeletonlabs/skeleton-svelte/dist';
+
+/* Dark mode keys on data-mode on <html>, set before first paint by
+   src/app.html and switched by the header button. Dark is the default. */
+@custom-variant dark (&:where([data-mode='dark'], [data-mode='dark'] *));
+
+/* The control surface's type scale (carried from the Skeleton 2 Tailwind
+   config, which replaced the default scale). */
+@theme {
+	--text-xs: 0.7rem;
+	--text-sm: 0.9rem;
+	--text-base: 1rem;
+	--text-xl: 1.75rem;
+	--text-2xl: 2.563rem;
+	--text-3xl: 3.953rem;
+	--text-4xl: 4.441rem;
+	--text-5xl: 5.052rem;
+	--text-jumbo: 6rem;
+}
+
+.hideBtn {
+	visibility: hidden;
+}
+
+html,
+body {
+	height: 100%;
+	position: fixed;
+	inset: 0;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+@keyframes colorChange {
+	from {
+		background-position: left top;
+		background-size: 200% 100%;
+	}
+	49.9% {
+		background-position: left top;
+	}
+	50% {
+		background-size: 100% 100%;
+	}
+	50.1% {
+		background-position: right top;
+	}
+	to {
+		background-position: right top;
+		background-size: 200% 100%;
+	}
+}

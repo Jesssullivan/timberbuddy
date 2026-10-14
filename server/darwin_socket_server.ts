@@ -1,10 +1,21 @@
 import express from 'express';
 import { createServer, Server as HttpServer } from 'http';
 import {Server as SocketIOServer, Socket} from 'socket.io';
-import { handler } from '../build/handler.js';
 
 import * as readline from 'readline';
 import { ReadStream } from 'tty';
+
+// adapter-node builds each request origin from PROTOCOL_HEADER and assumes
+// https without it. This server speaks plain HTTP (the kiosk loads
+// http://localhost:3000), so SvelteKit would reject every remote command with
+// 403 (origin mismatch). Unless the operator sets PROTOCOL_HEADER (for a TLS
+// proxy in front), stamp each request with its real protocol before the
+// handler runs.
+// The handler reads its env at import, so it is imported after this.
+const PROTO_HEADER = 'x-timberbuddy-proto';
+const stampProtocol = !process.env.PROTOCOL_HEADER;
+if (stampProtocol) process.env.PROTOCOL_HEADER = PROTO_HEADER;
+const { handler } = await import('../build/handler.js');
 
 // Emit keypress events for the process.stdin
 readline.emitKeypressEvents(process.stdin);
@@ -14,7 +25,7 @@ if ((process.stdin as ReadStream).isTTY) {
 }
 
 
-const port = 3000;
+const port = Number(process.env.PORT) || 3000;
 
 const app = express();
 const index: HttpServer = createServer(app);
@@ -25,6 +36,12 @@ io.on('connection', (socket) => {
   socket.emit('eventFromServer', 'Sockets are live! 👋');
 });
 
+if (stampProtocol) {
+  app.use((req, _res, next) => {
+    req.headers[PROTO_HEADER] = req.protocol;
+    next();
+  });
+}
 app.use(handler);
 
 index.listen(port, () => {

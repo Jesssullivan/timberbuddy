@@ -27,7 +27,7 @@ Read on to understand the architecture of this project, why it is built this way
 **Data transmission and storage:**
 - we use a flat json file to store and ultimately log / rotate data as well as browser localStorage to actively handle data, where the localStorage values are managed via a SvelteKit store.  The use of browserStorage allows the touch UI to display, modify and cache data being used by each *type* of client (stack, core) as well as removes load on the http API and thus the filesystem.
 - In the case of timberbuddy, we store Cut size, stack size and total cut count in a static json file.
-- Changes to data values to the filesystem are completed via the node POST API.
+- Changes to data values to the filesystem are completed via SvelteKit remote functions (`src/lib/store.remote.ts`: the `getStore` query, and the `setCutSize` / `recordCut` commands).
 - If there is a disagreement between client and server about values, the static file values take presidence
 - Jobs executed by the server (ie moving a saw) read from the static file directly.
 
@@ -37,7 +37,7 @@ Read on to understand the architecture of this project, why it is built this way
 **Pi Node Server:**
 - The compiled sveltekit application (*client + server*) is served using a custom express node application.
   - The sveltkit application uses the `node-adapter` as part of the vite build process to make this possible.
-  - The *Sveltekit application* is responsible for handling the POST API and **creating** and **writing** to the static json data file.  The Sveltekit application is responsible for all http communication.
+  - The *Sveltekit application* is responsible for the remote functions and **creating** and **writing** to the static json data file.  The Sveltekit application is responsible for all http communication.
 - The *node server* is responsible for pi GPIO connections (buttons!) websocket connections, managing atomic hardware state and i2c bus and for **reading** the static json file during routine execution.
 - includes keyboard support and does its best to allow for graceful socket, GPIO and fs exit (allowing for the systemd service to properly keep the  service alive)
 
@@ -69,7 +69,6 @@ Read on to understand the architecture of this project, why it is built this way
 
 **Touchscreen / UI:**
 - SvelteKit web application;
-  - Pages use the edge runtime
 - Runs directly in a browser in kiosk mode
   - Utilizes the Skeleton UI component library
   - Utilizes Lucide Iconography
@@ -118,11 +117,14 @@ Read on to understand the architecture of this project, why it is built this way
 #### for development:
 
 - local depends:
-  - you'll need node v20 and pnpm, npx, tsx installed.
+  - Node `^22.17.0 || >=24 <25` (SvelteKit 3 needs 22.17 or newer) and pnpm 10.13.1 (`corepack enable` picks it up from `packageManager`).
+  - The stack (SvelteKit 3, Svelte 5, TypeScript 7, Skeleton 5) is described in [AGENTS.md](AGENTS.md).
 
 ```shell
 git clone https://github.com/jesssullivan/timberbuddy && cd timberbuddy
 pnpm i
+pnpm run check   # svelte-check --tsgo on TypeScript 7
+pnpm run test    # vitest
 pnpm run build
 
 # just sveltekit applications; live reload:

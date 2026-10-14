@@ -1,0 +1,13 @@
+diff --git a/src/stringify.js b/src/stringify.js
+index 5cbaca8..0e7e08b 100644
+--- a/src/stringify.js
++++ b/src/stringify.js
+@@ -141,7 +141,7 @@ function run(async, value, reducers, options) {
+ 		} else if (ops.isThenable(thing)) {
+ 			if (!async) {
+ 				throw new DevalueError(
+-					`Cannot stringify a Promise or thenable — use stringifyAsync instead`,
++					`Cannot stringify a Promise or thenable; use stringifyAsync instead`,
+ 					keys,
+ 					thing,
+ 					value
