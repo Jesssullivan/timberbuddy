@@ -77,13 +77,14 @@
 		displayNumber = '';
 	};
 
-	const largerCut = () => {
-		displayNumber = String(Number(displayNumber) + step);
+	// Round the step result so repeated 0.1 steps store 1.7, not 1.7000000000000002.
+	const nudge = (delta: number) => {
+		displayNumber = String(Math.round((Number(displayNumber) + delta) * 1e6) / 1e6);
 	};
 
-	const smallerCut = () => {
-		displayNumber = String(Number(displayNumber) - step);
-	};
+	const largerCut = () => nudge(step);
+
+	const smallerCut = () => nudge(-step);
 
 	const shown = $derived.by(() => {
 		const text = String(Math.round(Number(displayNumber) * 100) / 100) + '"';
