@@ -54,6 +54,14 @@ only `stack_height` / `core_height` and a finite number) and `recordCut`
 `src/lib/server/store.ts`. `server/pi_socket_server.ts` reads the same
 store.json from the working directory while it runs a routine.
 
+Remote commands are POSTs that SvelteKit checks against the request origin.
+adapter-node builds that origin from `PROTOCOL_HEADER` and assumes `https`
+without it, but the kiosk serves plain HTTP. `server/*_socket_server.ts`
+therefore set `PROTOCOL_HEADER` to their own header and stamp each request's
+real protocol into it before the handler runs. If the app is ever put behind a
+TLS proxy, set `PROTOCOL_HEADER` (for example `x-forwarded-proto`) and the
+servers leave it alone.
+
 ## In-house packages (RU6, RU9)
 
 None. If one is added, it comes from the Bazel registry (bazel_dep plus
