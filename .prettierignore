@@ -1,0 +1,10 @@
+build
+.svelte-kit
+node_modules
+.claude
+.gstack
+static
+*.md
+pnpm-lock.yaml
+flake.lock
+*.svx

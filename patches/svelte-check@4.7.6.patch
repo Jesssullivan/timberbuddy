@@ -1,0 +1,57 @@
+# Upstream: https://github.com/sveltejs/language-tools (packages/svelte-check),
+#           tag svelte-check@4.7.6; source files src/tsgo.ts and
+#           src/incremental.ts, bundled here.
+# File:     dist/src/index.js (tryParseTsGoVersion, emitSvelteFiles)
+# Reason:   RU13 (TypeScript 7.0.2 as `typescript`).
+#           1. `--tsgo` looked for TypeScript 7 only under the
+#              `@typescript/native` or `@typescript/native-preview` aliases.
+#              It now also accepts `typescript` itself when its major version
+#              is 7 or later, so `svelte-check --tsgo` type-checks with the
+#              project's own typescript@7.0.2. svelte-check's in-process
+#              parser (svelte2tsx) gets the TS 6 API through the
+#              `.pnpmfile.cjs` readPackage hook (its `typescript` peer becomes
+#              `npm:@typescript/typescript6@6.0.2`); see patches/README.md.
+#           2. `--tsgo` without `--incremental` starts from an empty manifest
+#              but never cleared its emit directory, and every file there is
+#              part of the overlay program. The svelte2tsx output of a DELETED
+#              .svelte file kept being type-checked and reported phantom
+#              errors (found by the U4 xoxd.ai lane). With no manifest entries
+#              to prune from, emitSvelteFiles now starts from an empty
+#              directory.
+# Upstream-ready diffs: patches/upstream/sveltejs-language-tools-svelte-check-tsgo-typescript7.diff
+#                       patches/upstream/sveltejs-language-tools-svelte-check-tsgo-stale-emit.diff
+# Remove when svelte-check discovers TypeScript 7 as `typescript` and clears
+# its emit directory on a fresh (non-incremental) run.
+diff --git a/dist/src/index.js b/dist/src/index.js
+index 8eec917..b985f56 100644
+--- a/dist/src/index.js
++++ b/dist/src/index.js
+@@ -129084,7 +129084,9 @@ async function findFiles(workspacePath, filePathsToIgnore, filter) {
+ 
+ function tryParseTsGoVersion(tsconfigPath) {
+     const pkg = tryParsePkg(tsconfigPath, '@typescript/native') ??
+-        tryParsePkg(tsconfigPath, '@typescript/native-preview');
++        tryParsePkg(tsconfigPath, '@typescript/native-preview') ??
++        // TypeScript 7 installed as `typescript` itself (no alias).
++        tryParsePkg(tsconfigPath, 'typescript');
+     if (pkg &&
+         (pkg.pkgJsonName === 'typescript' || pkg.pkgJsonName === '@typescript/native-preview') &&
+         pkg.major >= 7) {
+@@ -129219,10 +129221,16 @@ async function emitSvelteFiles(workspacePath, filePathsToIgnore, incremental, co
+     const cacheDir = getCacheDir(workspacePath);
+     const emitDir = path__namespace.join(cacheDir, EMIT_SUBDIR);
+     const manifestPath = path__namespace.join(cacheDir, 'manifest.json');
+-    fs__namespace.mkdirSync(emitDir, { recursive: true });
+     const manifest = incremental
+         ? loadManifest(manifestPath, workspacePath)
+         : { version: MANIFEST_VERSION, entries: {} };
++    // With no manifest entries nothing can prune the outputs of deleted
++    // sources, and every file in emitDir is part of the overlay program, so
++    // start from an empty directory.
++    if (Object.keys(manifest.entries).length === 0) {
++        fs__namespace.rmSync(emitDir, { recursive: true, force: true });
++    }
++    fs__namespace.mkdirSync(emitDir, { recursive: true });
+     const kitFilesSettings = await loadKitFilesSettings(workspacePath, config);
+     const isJsOrTsFile = (filePath) => filePath.endsWith('.ts') || filePath.endsWith('.js');
+     const allRelevantFiles = await findFiles(workspacePath, filePathsToIgnore, (filePath) => filePath.endsWith('.svelte') ||

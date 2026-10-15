@@ -1,60 +1,97 @@
 {
-  "name": "timber-buddy",
-  "author": "Jess Sullivan <jsullivan2@bates.edu> (https://transscendsurvival.org)",
-  "bugs": {
-    "url": "https://github.com/jesssullivan2/project/issues",
-    "email": "jsullivan2+timberbuddy@bates.edu"
-  },
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier --check . && eslint .",
-    "format": "prettier --write .",
-    "darwin-start": "npx tsx ./server/darwin_socket_server.ts",
-    "pi-start": "npx tsx ./server/pi_socket_server.ts"
-  },
-  "devDependencies": {
-    "@skeletonlabs/skeleton": "2.10.1",
-    "@skeletonlabs/tw-plugin": "0.4.0",
-    "@sveltejs/adapter-auto": "^3.0.0",
-    "@sveltejs/adapter-node": "^5.2.2",
-    "@sveltejs/adapter-static": "^3.0.2",
-    "@sveltejs/kit": "^2.0.0",
-    "@sveltejs/vite-plugin-svelte": "^3.0.0",
-    "@tailwindcss/typography": "0.5.13",
-    "@types/express": "^4.17.21",
-    "autoprefixer": "10.4.19",
-    "eslint": "^9.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-svelte": "^2.36.0",
-    "globals": "^15.0.0",
-    "postcss": "8.4.39",
-    "prettier": "^3.1.1",
-    "prettier-plugin-svelte": "^3.1.2",
-    "svelte": "^4.2.7",
-    "svelte-check": "^3.6.0",
-    "tailwindcss": "3.4.5",
-    "tslib": "^2.4.1",
-    "typescript": "^5.0.0",
-    "typescript-eslint": "^8.0.0-alpha.20",
-    "vite": "^5.0.3",
-    "vite-plugin-tailwind-purgecss": "0.3.3"
-  },
-  "type": "module",
-  "dependencies": {
-    "@floating-ui/dom": "1.6.7",
-    "coffeescript": "^2.7.0",
-    "express": "^4.19.2",
-    "lucide-svelte": "^0.408.0",
-    "onoff": "latest",
-    "raspi-i2c": "^6.2.4",
-    "socket.io": "^4.7.5",
-    "socket.io-client": "^4.8.0",
-    "tsx": "^4.19.1"
-  }
+	"name": "timber-buddy",
+	"author": "Jess Sullivan <jsullivan2@bates.edu> (https://transscendsurvival.org)",
+	"bugs": {
+		"url": "https://github.com/jesssullivan2/project/issues",
+		"email": "jsullivan2+timberbuddy@bates.edu"
+	},
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"packageManager": "pnpm@10.13.1",
+	"engines": {
+		"node": "^22.17.0 || >=24 <25"
+	},
+	"imports": {
+		"#lib/*": "./src/lib/*"
+	},
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsgo --tsconfig ./tsconfig.json --fail-on-warnings",
+		"check:watch": "svelte-kit sync && svelte-check --tsgo --tsconfig ./tsconfig.json --watch",
+		"test": "vitest run",
+		"lint": "prettier --check src *.ts *.js && eslint src",
+		"format": "prettier --write src *.ts *.js",
+		"darwin-start": "tsx ./server/darwin_socket_server.ts",
+		"pi-start": "tsx ./server/pi_socket_server.ts"
+	},
+	"dependencies": {
+		"@lucide/svelte": "^1.28.0",
+		"effect": "4.0.2",
+		"express": "^4.21.1",
+		"socket.io": "^4.8.0",
+		"socket.io-client": "^4.8.0",
+		"tsx": "^4.23.5"
+	},
+	"optionalDependencies": {
+		"onoff": "^6.0.3",
+		"raspi-i2c": "^6.2.4"
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@skeletonlabs/skeleton": "5.0.1",
+		"@skeletonlabs/skeleton-svelte": "5.0.1",
+		"@sveltejs/adapter-node": "6.0.0",
+		"@sveltejs/kit": "3.0.1",
+		"@sveltejs/vite-plugin-svelte": "7.3.1",
+		"@tailwindcss/vite": "^4.3.3",
+		"@types/express": "^4.17.21",
+		"@types/node": "^22.20.1",
+		"@typescript/typescript6": "6.0.2",
+		"eslint": "^10.12.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-svelte": "^3.23.0",
+		"globals": "^17.9.0",
+		"prettier": "^3.9.9",
+		"prettier-plugin-svelte": "^4.1.1",
+		"svelte": "5.57.2",
+		"svelte-check": "4.7.6",
+		"tailwindcss": "^4.3.3",
+		"typescript": "7.0.2",
+		"typescript-eslint": "^8.71.1",
+		"vite": "8.3.3",
+		"vitest": "5.0.3"
+	},
+	"pnpm": {
+		"packageExtensions": {
+			"@sveltejs/kit@3.0.1": {
+				"peerDependencies": {
+					"@typescript/typescript6": "^6.0.0"
+				},
+				"peerDependenciesMeta": {
+					"@typescript/typescript6": {
+						"optional": true
+					}
+				}
+			}
+		},
+		"peerDependencyRules": {
+			"allowedVersions": {
+				"@sveltejs/kit>typescript": "7"
+			}
+		},
+		"patchedDependencies": {
+			"@sveltejs/kit@3.0.1": "patches/@sveltejs__kit@3.0.1.patch",
+			"devalue@5.9.4": "patches/devalue@5.9.4.patch",
+			"svelte-check@4.7.6": "patches/svelte-check@4.7.6.patch"
+		},
+		"onlyBuiltDependencies": [
+			"@tailwindcss/oxide",
+			"epoll",
+			"esbuild",
+			"i2c-bus"
+		]
+	}
 }

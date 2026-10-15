@@ -1,0 +1,25 @@
+# Upstream: https://github.com/sveltejs/devalue, tag v5.9.4
+# File:     src/stringify.js (run, the thenable branch)
+# Reason:   House rule (no em dashes or en dashes in published output,
+#           enforced by //:leak_scan_test rule operator-banned-dash). SvelteKit
+#           3.0.1 bundles devalue into the client runtime, and this error
+#           message is the only dash in devalue that survives minification
+#           (the rest are in comments). The message now uses a semicolon.
+#           No behaviour change. Not a TypeScript 7 patch.
+# Upstream-ready diff: patches/upstream/sveltejs-devalue-thenable-message.diff
+# Remove when the shipped devalue message carries no em dash, or when
+# patchedDependencies no longer matches the installed devalue (pnpm then fails
+# the install, so a devalue bump is loud).
+diff --git a/src/stringify.js b/src/stringify.js
+index 5cbaca8..0e7e08b 100644
+--- a/src/stringify.js
++++ b/src/stringify.js
+@@ -141,7 +141,7 @@ function run(async, value, reducers, options) {
+ 		} else if (ops.isThenable(thing)) {
+ 			if (!async) {
+ 				throw new DevalueError(
+-					`Cannot stringify a Promise or thenable — use stringifyAsync instead`,
++					`Cannot stringify a Promise or thenable; use stringifyAsync instead`,
+ 					keys,
+ 					thing,
+ 					value
